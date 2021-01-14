@@ -5,9 +5,9 @@ VisualStudioVersion = 16.0.30804.86
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ActorsGallery", "ActorsGallery\ActorsGallery.csproj", "{38B2DC66-8932-45D7-94C5-D59E823A6AB1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ActorsGallery.Data", "..\ActorsGallery.Data\ActorsGallery.Data.csproj", "{235E794A-1B5D-4863-9FD9-65E536F17FA1}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ActorsGallery.Data", "ActorsGallery.Data\ActorsGallery.Data.csproj", "{235E794A-1B5D-4863-9FD9-65E536F17FA1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ActorsGallery.Core", "..\ActorsGallery.Core\ActorsGallery.Core.csproj", "{E2FE3405-4D0D-49DB-A515-43C44C4C03B8}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ActorsGallery.Core", "ActorsGallery.Core\ActorsGallery.Core.csproj", "{E2FE3405-4D0D-49DB-A515-43C44C4C03B8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
