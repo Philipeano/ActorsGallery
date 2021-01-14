@@ -5,8 +5,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Contracts\" />
     <Folder Include="MySqlDataService\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ActorsGallery.Core\ActorsGallery.Core.csproj" />
   </ItemGroup>
 
 </Project>
