@@ -21,26 +21,17 @@ namespace ActorsGallery.Core.Models
 
 
         [Required]
-        public StatusEnum Status { get; set; }
-
-
-        public string StateOfOrigin { get; set; } // Nullable
-
-
-        [Required]
-        public GenderEnum Gender { get; set; }
-
-
-        public long LocationId { get; set; } // Nullable
+        public long EpisodeId { get; set; }
 
 
         [Required]
         public DateTime Created { get; set; }
 
 
-        public virtual Location Location { get; set; } // Nullable
+        [Required]
+        public long CommenterName { get; set; }
 
 
-        public virtual List<Episode> Episodes { get; set; } // Nullable
+        public Episode Episode { get; set; }
     }
 }
