@@ -31,8 +31,9 @@ namespace ActorsGallery.Data.MySqlDataService.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<int>("Gender")
-                        .HasColumnType("int");
+                    b.Property<string>("Gender")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<string>("LastName")
                         .IsRequired()
@@ -45,8 +46,9 @@ namespace ActorsGallery.Data.MySqlDataService.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<int>("Status")
-                        .HasColumnType("int");
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.HasKey("Id");
 

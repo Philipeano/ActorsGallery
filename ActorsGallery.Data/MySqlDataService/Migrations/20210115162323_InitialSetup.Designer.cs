@@ -9,8 +9,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ActorsGallery.Data.MySqlDataService.Migrations
 {
     [DbContext(typeof(ActorsGalleryContext))]
-    [Migration("20210115151936_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20210115162323_InitialSetup")]
+    partial class InitialSetup
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -33,8 +33,9 @@ namespace ActorsGallery.Data.MySqlDataService.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<int>("Gender")
-                        .HasColumnType("int");
+                    b.Property<string>("Gender")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<string>("LastName")
                         .IsRequired()
@@ -47,8 +48,9 @@ namespace ActorsGallery.Data.MySqlDataService.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<int>("Status")
-                        .HasColumnType("int");
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.HasKey("Id");
 

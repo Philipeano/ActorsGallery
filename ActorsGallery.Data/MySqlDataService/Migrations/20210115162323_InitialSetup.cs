@@ -4,7 +4,7 @@ using MySql.Data.EntityFrameworkCore.Metadata;
 
 namespace ActorsGallery.Data.MySqlDataService.Migrations
 {
-    public partial class InitialCreate : Migration
+    public partial class InitialSetup : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -71,9 +71,9 @@ namespace ActorsGallery.Data.MySqlDataService.Migrations
                         .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
                     FirstName = table.Column<string>(nullable: false),
                     LastName = table.Column<string>(nullable: false),
-                    Status = table.Column<int>(nullable: false),
+                    Status = table.Column<string>(nullable: false),
                     StateOfOrigin = table.Column<string>(nullable: false),
-                    Gender = table.Column<int>(nullable: false),
+                    Gender = table.Column<string>(nullable: false),
                     LocationId = table.Column<long>(nullable: false),
                     Created = table.Column<DateTime>(nullable: false)
                 },
