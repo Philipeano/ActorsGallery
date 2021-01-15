@@ -1,7 +1,6 @@
 ﻿using ActorsGallery.Core.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using MySql.Data.MySqlClient;
 
 namespace ActorsGallery.Data.MySqlDataService
 {
@@ -12,6 +11,7 @@ namespace ActorsGallery.Data.MySqlDataService
         {
 
         }
+
 
         public DbSet<Character> Characters { get; set; }
 
