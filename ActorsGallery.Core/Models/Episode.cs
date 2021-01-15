@@ -23,13 +23,13 @@ namespace ActorsGallery.Core.Models
         public string EpisodeCode { get; set; }
 
 
-        public virtual List<Character> Characters { get; set; } // Nullable
-
-
-        public virtual List<Comment> EpisodeComments { get; set; } // Nullable
-
-
         [Required]
         public DateTime Created { get; set; }
+
+
+        public virtual List<EpisodeCharacter> EpisodeCharacters { get; set; } 
+
+
+        public virtual List<Comment> EpisodeComments { get; set; } 
     }
 }

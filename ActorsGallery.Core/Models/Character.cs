@@ -42,6 +42,6 @@ namespace ActorsGallery.Core.Models
         public Location Location { get; set; } // Nullable
 
 
-        public virtual List<Episode> Episodes { get; set; } // Nullable
+        public virtual List<EpisodeCharacter> EpisodesFeaturedIn { get; set; }
     }
 }

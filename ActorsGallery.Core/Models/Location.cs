@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -24,5 +25,8 @@ namespace ActorsGallery.Core.Models
 
         [Required]
         public DateTime Created { get; set; }
+
+
+        public virtual List<Character> Characters { get; set; }
     }
 }
