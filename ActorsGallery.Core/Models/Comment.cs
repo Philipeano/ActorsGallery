@@ -1,6 +1,4 @@
-﻿using ActorsGallery.Core.Enums;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -29,7 +27,7 @@ namespace ActorsGallery.Core.Models
 
 
         [Required]
-        public long CommenterName { get; set; }
+        public string CommenterName { get; set; }
 
 
         public Episode Episode { get; set; }

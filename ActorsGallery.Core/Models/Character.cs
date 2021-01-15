@@ -21,7 +21,7 @@ namespace ActorsGallery.Core.Models
 
 
         [Required]
-        public StatusEnum Status { get; set; }
+        public string Status { get; set; }
 
 
         [Required]
@@ -29,7 +29,7 @@ namespace ActorsGallery.Core.Models
 
 
         [Required]
-        public GenderEnum Gender { get; set; }
+        public string Gender { get; set; }
 
 
         public long LocationId { get; set; } // Nullable
@@ -42,6 +42,6 @@ namespace ActorsGallery.Core.Models
         public Location Location { get; set; } // Nullable
 
 
-        public virtual List<Episode> Episodes { get; set; } // Nullable
+        public virtual List<EpisodeCharacter> EpisodesFeaturedIn { get; set; }
     }
 }
