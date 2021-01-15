@@ -3,6 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace ActorsGallery.Core.Models
 {
+    /* This model helps to facilitate a many-to-many relationship between Episode and Character */
     public class EpisodeCharacter
     {
         [Required]
