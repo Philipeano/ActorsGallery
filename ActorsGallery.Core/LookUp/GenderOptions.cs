@@ -2,7 +2,6 @@
 
 namespace ActorsGallery.Core.LookUp
 {
-
     public static class GenderOptions
     {
 
