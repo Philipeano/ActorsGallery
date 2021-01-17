@@ -352,26 +352,3 @@ namespace ActorsGallery.Data.MySqlDataService
         }
     }
 }
-
-
-
-
-
-
-
-
-//Define EpisodeData class to implement IEpisodeData interface.
-
-//Implement the following required methods:
-
-//GetAllEpisodes()(sorted by ReleaseDate ASC; each Episode object includes NumOfComments)
-//SearchByCharacter()(accepts a CharacterName argument; returns list of episodes the character featured in)
-
-//    AddComment()(accepts a Comment argument; enables users post comments targeting an episode)
-
-//Implement the following additional methods:
-
-//AddCharacter()(necessary for populating episodes with characters)
-//    CreateEpisode()
-//UpdateEpisode()
-//DeleteEpisode()
