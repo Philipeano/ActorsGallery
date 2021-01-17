@@ -17,7 +17,7 @@ namespace ActorsGallery.Core.DTOs
         public string CommenterName { get; set; }
 
 
-        [Required, Display(Name = "Commenter's IP Address")]
+        [Display(Name = "Commenter's IP Address")]
         public string IpAddress { get; set; }
 
 
@@ -25,7 +25,7 @@ namespace ActorsGallery.Core.DTOs
         public DateTime Created { get; set; }
 
 
-        [Required, Display(Name = "Episode Id")]
+        [Display(Name = "Episode Id")]
         public long EpisodeId { get; set; }
 
 

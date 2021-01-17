@@ -1,18 +1,25 @@
-﻿using ActorsGallery.Core.Models;
+﻿using ActorsGallery.Core.DTOs;
 using System.Collections.Generic;
 
 namespace ActorsGallery.Data.Contracts
 {
     public interface IEpisodeData
     {
-        //Sort list by ReleaseDate in ascending order; Include NumOfComments in each object
-        public IEnumerable<Episode> GetAllEpisodes();
+        // Mandatory methods as stated in requirements doc
+        public List<EpisodeDTO> GetAllEpisodes();
+
+        public List<EpisodeDTO> SearchByCharacter(string searchKey, string searchValue);
+
+        public void AddComment(string episodeId, CommentDTO input, string commenterIpAddress, out string responseMsg);
 
 
-        // Return list of episodes featuring specified character
-        public IEnumerable<Episode> FindEpisodesByCharacter(string characterName);
+        // Extra methods necessary for CRUD operations
+        public void AddCharacter(string episodeId, EpisodeCharacterDTO input, out string responseMsg);
 
+        public EpisodeDTO CreateEpisode(EpisodeDTO input, out string responseMsg);
 
-        public void AddCommentToEpisode(long episodeId, Comment commentObj);
+        public EpisodeDTO UpdateEpisode(string episodeId, EpisodeDTO input, out string responseMsg);
+
+        public void DeleteEpisode(string episodeId, out string responseMsg);
     }
 }

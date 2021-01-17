@@ -14,7 +14,7 @@ namespace ActorsGallery.Core.DTOs
 
 
         [Required, Display(Name = "Release Date")]
-        public DateTime ReleaseDate { get; set; }
+        public string ReleaseDate { get; set; }
 
 
         [Required, Display(Name = "Episode Code")]
@@ -23,5 +23,13 @@ namespace ActorsGallery.Core.DTOs
 
         [Display(Name = "Created On")]
         public DateTime Created { get; set; }
+
+
+        [Display(Name = "Number of Comments")]
+        public int NumOfComments { get; set; }
+
+
+        [Display(Name = "Number of Characters")]
+        public int NumOfCharacters { get; set; }
     }
 }
