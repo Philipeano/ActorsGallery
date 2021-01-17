@@ -6,13 +6,11 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace ActorsGallery.Data.MySqlDataService
 {
     public class CharacterData : ICharacterData
     {
-
         private readonly ActorsGalleryContext context;
 
         private readonly List<string> validGenderValues = GenderOptions.Values;
@@ -30,7 +28,7 @@ namespace ActorsGallery.Data.MySqlDataService
         }
 
 
-        private Character GetCharacterById(long id)
+        private Character FetchCharacterById(long id)
         {
             return context.Characters
                  .Include(c => c.Location)
@@ -256,7 +254,7 @@ namespace ActorsGallery.Data.MySqlDataService
               - Return updated character record
              */
 
-            Character character = GetCharacterById(characterId);
+            Character character = FetchCharacterById(characterId);
 
             return new CharacterDTO { };
         }
