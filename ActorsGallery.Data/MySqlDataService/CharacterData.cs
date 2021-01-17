@@ -204,7 +204,7 @@ namespace ActorsGallery.Data.MySqlDataService
         }
 
 
-        public Character CreateCharacter(CharacterDTO input, out string responseMsg)
+        public CharacterDTO CreateCharacter(CharacterDTO input, out string responseMsg)
         {
             if (ValidateInput(input, out responseMsg) == true)
             {
@@ -222,7 +222,19 @@ namespace ActorsGallery.Data.MySqlDataService
                 context.Characters.Add(newCharacter);
                 context.SaveChanges();
 
-                return newCharacter;
+
+                return new CharacterDTO
+                {
+                    Id = newCharacter.Id,
+                    FirstName = newCharacter.FirstName,
+                    LastName = newCharacter.LastName,
+                    Status = newCharacter.Status,
+                    StateOfOrigin = newCharacter.StateOfOrigin,
+                    Gender = newCharacter.Gender,
+                    LocationId = (newCharacter.Location != null) ? newCharacter.Location.Id.ToString() : string.Empty,
+                    LocationName = (newCharacter.Location != null) ? newCharacter.Location.Name : string.Empty,
+                    Created = newCharacter.Created
+                };
             }
             else
             {                
@@ -231,7 +243,7 @@ namespace ActorsGallery.Data.MySqlDataService
         }
     
 
-        public Character UpdateCharacter(long characterId, CharacterDTO input, out string responseMsg) 
+        public CharacterDTO UpdateCharacter(long characterId, CharacterDTO input, out string responseMsg) 
         {
             responseMsg = string.Empty;
 
@@ -245,7 +257,8 @@ namespace ActorsGallery.Data.MySqlDataService
              */
 
             Character character = GetCharacterById(characterId);
-            return character;
+
+            return new CharacterDTO { };
         }
 
 
