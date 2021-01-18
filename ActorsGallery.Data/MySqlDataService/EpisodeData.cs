@@ -8,7 +8,7 @@ using System.Linq;
 
 namespace ActorsGallery.Data.MySqlDataService
 {
-    class EpisodeData : IEpisodeData
+    public class EpisodeData : IEpisodeData
     {
 
         private readonly ActorsGalleryContext context;
