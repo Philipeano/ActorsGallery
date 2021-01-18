@@ -69,6 +69,17 @@ namespace ActorsGallery.Data.MySqlDataService
         }
 
 
+        private bool RoleAlreadyAssigned(long episodeId, long characterId, out string errorMsg)
+        {
+            bool result = context.EpisodeCharacters
+                .Any(ec => ec.EpisodeId == episodeId && ec.CharacterId == characterId);
+
+            errorMsg = result ? "This character already has a role in this episode. \n" : string.Empty;
+
+            return result;
+        }
+
+
         private bool ValidateEpisodeObj(EpisodeDTO input, out string errorMsg)
         {
             if (input == null)
@@ -265,9 +276,10 @@ namespace ActorsGallery.Data.MySqlDataService
         public void AddCharacter(string episodeId, EpisodeCharacterDTO input, out string responseMsg)
         {
             bool validationResult1 = ValidateEpisodeId(episodeId, out string validationMsg1);
-            bool validationResult2 = ValidateEpisodeCharacterObj(input, out string validationMsg2);           
+            bool validationResult2 = ValidateEpisodeCharacterObj(input, out string validationMsg2);
+            bool validationResult3 = RoleAlreadyAssigned(long.Parse(episodeId), long.Parse(input.CharacterId), out string validationMsg3);
 
-            if (validationResult1 && validationResult2)
+            if (validationResult1 && validationResult2 && validationResult3)
             {
                 Episode episode = FetchEpisodeById(long.Parse(episodeId));
                 Character character = FetchCharacterById(long.Parse(input.CharacterId));
@@ -284,7 +296,7 @@ namespace ActorsGallery.Data.MySqlDataService
                 context.SaveChanges();
             }
 
-            responseMsg = $"{validationMsg1}{validationMsg2}";
+            responseMsg = $"{validationMsg1}{validationMsg2}{validationMsg3}";
         }
 
 
@@ -302,7 +314,6 @@ namespace ActorsGallery.Data.MySqlDataService
                 };
                 context.Episodes.Add(newEpisode);
                 context.SaveChanges();
-
 
                 return new EpisodeDTO
                 {

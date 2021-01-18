@@ -26,10 +26,10 @@ namespace ActorsGallery.Core.DTOs
 
 
         [Display(Name = "Episode Id")]
-        public long EpisodeId { get; set; }
+        public string EpisodeId { get; set; }
 
 
         [Display(Name = "Episode Title")]
-        public long EpisodeName { get; set; }
+        public string EpisodeName { get; set; }
     }
 }
