@@ -18,11 +18,14 @@ namespace ActorsGallery.Data.Utilities
 
         private readonly IFetcher fetcher;
 
+        public Validator()
+        {
+        }
+
         public Validator(IFetcher dataFetcher)
         {
             fetcher = dataFetcher;
         }
-
 
         public bool IsValidEntry(string entryName, string entryValue)
         {
@@ -222,6 +225,46 @@ namespace ActorsGallery.Data.Utilities
                     errorMsg = $"{errorMsg}'Longitude' must be in the range -180 to +180. \n";
 
                 return errorMsg.Trim() == string.Empty;
+            }
+        }
+
+
+        public bool IsValidQuery(string query, out string[] parts, out string errorMsg)
+        {
+            parts = new string[] { };
+
+            if (query == string.Empty)
+            {
+                errorMsg = "Your query is blank. Kindly use the required format.";
+                return false;
+            }
+            else {
+                string[] queryParts = query.Split(':');
+
+                if(queryParts.Length != 2)
+                {
+                    errorMsg = "Your query is invalid. Kindly use the required format.";
+                    return false;
+                }
+
+                if (queryParts[0] != "char_id" && queryParts[0] != "char_name")
+                {
+                    errorMsg = "Your query is invalid. Kindly use the required format.";
+                    return false;
+                }
+
+                if (queryParts[0] == "char_id" && (!int.TryParse(queryParts[1], out int valCharId) || valCharId < 1))
+                {
+                    errorMsg= "Your query is invalid. \nThe 'id' value must be a positive integer.";
+                    return false;
+
+                }
+                else
+                {
+                    queryParts.CopyTo(parts, 0);
+                    errorMsg = string.Empty;
+                    return true;
+                }
             }
         }
     }

@@ -3,10 +3,7 @@ using ActorsGallery.Data.Contracts;
 using ActorsGallery.Data.Utilities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace ActorsGallery.Controllers
 {
@@ -14,13 +11,12 @@ namespace ActorsGallery.Controllers
     [ApiController]
     public class CharactersController : ControllerBase
     {
-
         private readonly ICharacterData characterData;
         private readonly Formatter formatter;
 
-        public CharactersController(ICharacterData charData)
+        public CharactersController(ICharacterData characterService)
         {
-            characterData = charData;
+            characterData = characterService;
             formatter = new Formatter();
         }
 
