@@ -11,13 +11,12 @@ namespace ActorsGallery.Controllers
     [ApiController]
     public class CharactersController : ControllerBase
     {
-
         private readonly ICharacterData characterData;
         private readonly Formatter formatter;
 
-        public CharactersController(ICharacterData charData)
+        public CharactersController(ICharacterData characterService)
         {
-            characterData = charData;
+            characterData = characterService;
             formatter = new Formatter();
         }
 
