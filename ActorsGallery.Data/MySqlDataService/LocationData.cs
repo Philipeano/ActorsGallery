@@ -1,80 +1,30 @@
 ﻿using ActorsGallery.Core.DTOs;
 using ActorsGallery.Core.Models;
 using ActorsGallery.Data.Contracts;
-using Microsoft.EntityFrameworkCore;
+using ActorsGallery.Data.Utilities;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace ActorsGallery.Data.MySqlDataService
 {
     public class LocationData : ILocationData
     {
         private readonly ActorsGalleryContext context;
+        private readonly IFetcher fetcher;
+        private readonly Validator validator;
 
-
-        public LocationData(ActorsGalleryContext dbContext)
+        public LocationData(ActorsGalleryContext dbContext, IFetcher dataFetcher)
         {
             context = dbContext;
-        }
-
-
-        private List<Location> FetchAllLocations()
-        {
-            return context.Locations
-                 .ToList();
-        }
-
-
-        private Location FetchLocationById(string strLocationId)
-        {
-            if (!long.TryParse(strLocationId, out long valLocationId) || valLocationId < 1)
-            {
-                return null;
-            }
-            else
-            {
-                return context.Locations.Find(valLocationId);
-            }
-        }
-
-
-        private bool ValidateLocationObj(LocationDTO input, out string errorMsg)
-        {
-            if (input == null)
-            {
-                errorMsg = "Input object cannot be null or empty.";
-                return false;
-            }
-
-            else
-            {
-                errorMsg = string.Empty;
-
-                if (input.Name == string.Empty)
-                    errorMsg = "'Location Name' is required. \n";
-
-                if (double.TryParse(input.Latitude, out double valLatitude))
-                    errorMsg = $"{errorMsg}'Latitude' must be a valid double-precision number. \n";
-
-                if (valLatitude < -90 || valLatitude > 90)
-                    errorMsg = $"{errorMsg}'Latitude' must be in the range -90 to +90. \n";
-
-                if (double.TryParse(input.Longitude, out double valLongitude))
-                    errorMsg = $"{errorMsg}'Longitude' must be a valid double-precision number. \n";
-
-                if (valLongitude < -180 || valLongitude > 180)
-                    errorMsg = $"{errorMsg}'Longitude' must be in the range -180 to +180. \n";
-
-                return errorMsg.Trim() == string.Empty;
-            }
+            fetcher = dataFetcher;
+            validator = new Validator(dataFetcher);
         }
 
 
         public List<LocationDTO> GetAllLocations()
         {
-            // Fetch all available locations 
-            List<Location> locations = FetchAllLocations();
+            // Fetch all locations 
+            List<Location> locations = fetcher.FetchAllLocations();
 
             // Render results using public-facing DTOs, rather than internal data representation 
             List<LocationDTO> resultSet = new List<LocationDTO> { };
@@ -95,7 +45,11 @@ namespace ActorsGallery.Data.MySqlDataService
 
         public LocationDTO CreateLocation(LocationDTO input, out string responseMsg)
         {
-            if (ValidateLocationObj(input, out responseMsg) == true)
+            if (!validator.ValidateLocationObj(input, out responseMsg))
+            {
+                return null;
+            }
+            else
             {
                 // Validation checks passed. Create new Location record
                 Location newLocation = new Location
@@ -108,6 +62,7 @@ namespace ActorsGallery.Data.MySqlDataService
                 context.Locations.Add(newLocation);
                 context.SaveChanges();
 
+                // Display new record using public-facing DTO, rather than internal data representation 
                 return new LocationDTO
                 {
                     Id = newLocation.Id,
@@ -116,10 +71,6 @@ namespace ActorsGallery.Data.MySqlDataService
                     Longitude = newLocation.Longitude.ToString(),
                     Created = newLocation.Created
                 };
-            }
-            else
-            {
-                return null;
             }
         }
 

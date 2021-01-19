@@ -10,11 +10,11 @@ namespace ActorsGallery.Data.Contracts
 
         public List<EpisodeDTO> SearchByCharacter(string searchKey, string searchValue);
 
-        public void AddComment(string episodeId, CommentDTO input, string commenterIpAddress, out string responseMsg);
+        public CommentDTO AddComment(string episodeId, CommentDTO input, string commenterIpAddress, out string responseMsg);
 
 
         // Extra methods necessary for CRUD operations
-        public void AddCharacter(string episodeId, EpisodeCharacterDTO input, out string responseMsg);
+        public EpisodeCharacterDTO AddCharacter(string episodeId, EpisodeCharacterDTO input, out string responseMsg);
 
         public EpisodeDTO CreateEpisode(EpisodeDTO input, out string responseMsg);
 

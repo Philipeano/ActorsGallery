@@ -1,8 +1,7 @@
 ﻿using ActorsGallery.Core.DTOs;
-using ActorsGallery.Core.LookUp;
 using ActorsGallery.Core.Models;
 using ActorsGallery.Data.Contracts;
-using Microsoft.EntityFrameworkCore;
+using ActorsGallery.Data.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,102 +11,23 @@ namespace ActorsGallery.Data.MySqlDataService
     public class CharacterData : ICharacterData
     {
         private readonly ActorsGalleryContext context;
+        private readonly IFetcher fetcher;
+        private readonly Validator validator;
 
-        private readonly List<string> validGenderValues = GenderOptions.Values;
-        private readonly List<string> validStatusValues = StatusOptions.Values;
-        private readonly List<string> validNigerianStates = NigerianStates.Values;
-
-        private readonly List<string> validSortKeys = new List<string> { "firstname", "lastname", "gender" };
-        private readonly List<string> validSortOrders = new List<string> { "asc", "desc", "ascending", "descending" };
-        private readonly List<string> validFilterKeys = new List<string> { "gender", "status", "location" };
-
-
-        public CharacterData(ActorsGalleryContext dbContext)
+        public CharacterData(ActorsGalleryContext dbContext, IFetcher dataFetcher)
         {
             context = dbContext;
-        }
-
-
-        private Character FetchCharacterById(long id)
-        {
-            return context.Characters
-                 .Include(c => c.Location)
-                 .SingleOrDefault(c => c.Id == id);
-        }
-
-
-        private List<Character> FetchAllCharacters()
-        {
-            return context.Characters
-                 .Include(c => c.Location).ToList();
-        }
-
-
-        private bool IsValidOption(string value, List<string> validOptions, bool allowsNull = false)
-        {
-            if ((value == null || value == string.Empty) && allowsNull == false)
-            {
-                return false;
-            }
-            else if (!validOptions.Contains(value.ToLower()))
-            {
-                return false;
-            }
-            else
-            {
-                return true;
-            }
-        }
-
-
-        private Location FindLocationById(string strLocationId)
-        {
-            if (!long.TryParse(strLocationId, out long valLocationId) || valLocationId < 1)
-            {
-                return null;
-            }
-            else
-            {
-                return context.Locations.Find(valLocationId);
-            }
-        }
-
-
-        private bool ValidateInput(CharacterDTO input, out string errorMsg)
-        {
-            if (input == null)
-            {
-                errorMsg = "Input object cannot be null or empty.";
-                return false;
-            }
-
-            else
-            {
-                errorMsg = String.Empty;
-
-                if (input.FirstName == string.Empty || input.LastName == string.Empty)
-                    errorMsg = "Both 'First Name' and 'Last Name' are required. \n";
-
-                if (!IsValidOption(input.Status, validStatusValues, false))
-                    errorMsg = $"{errorMsg}'Status' must be any of 'Active', 'Dead' or 'Unknown'. \n";
-
-                if (!IsValidOption(input.StateOfOrigin, validNigerianStates, true))
-                    errorMsg = $"{errorMsg}'State of Origin' must be a valid Nigerian state. \n";
-
-                if (!IsValidOption(input.Gender, validGenderValues, false))
-                    errorMsg = $"{errorMsg}'Gender' must be either 'Male' or 'Female'. \n";
-
-                return errorMsg.Trim() == string.Empty;
-            }
+            fetcher = dataFetcher;
+            validator = new Validator(dataFetcher);
         }
 
 
         public List<CharacterDTO> GetCharacters(string filterKey = "none", string filterValue = "none", string sortKey = "default", string sortOrder = "default")
         {
-            // Fetch all available characters 
-            List<Character> characters = FetchAllCharacters();
+            // Fetch all characters 
+            List<Character> characters = fetcher.FetchAllCharacters();
 
-            if (filterKey.ToString() != "none" && filterKey.ToString() != "none")
+            if (filterKey.ToString() != "none" && filterValue.ToString() != "none")
             {
                 // Apply filter on result set, using 'filterkey' and 'filterValue' specified by user  
                 characters = FilterCharacters(characters, filterKey, filterValue);
@@ -120,8 +40,8 @@ namespace ActorsGallery.Data.MySqlDataService
             }
             else
             {
-                // Sort result set by the 'sortKey' and 'sortValue' specified by user  
-                characters = SortCharacters(characters, filterKey, filterValue);
+                // Sort result set by the 'sortKey' and 'sortOrder' specified by user  
+                characters = SortCharacters(characters, sortKey, sortOrder);
             }
 
             // Render results using public-facing DTOs, rather than internal data representation 
@@ -148,7 +68,7 @@ namespace ActorsGallery.Data.MySqlDataService
         // Allow sorting by FirstName, LastName or Gender
         public List<Character> SortCharacters(List<Character> characters, string sortKey, string sortOrder)
         {
-            if (!IsValidOption(sortKey, validSortKeys) || !IsValidOption(sortOrder, validSortOrders))
+            if (!validator.IsValidParam("sortkey", sortKey) || !validator.IsValidParam("sortorder", sortOrder))
                 return characters;
             else
             {
@@ -181,7 +101,7 @@ namespace ActorsGallery.Data.MySqlDataService
         // Allow filtering by Gender, Status or Location
         public List<Character> FilterCharacters(List<Character> characters, string filterKey, string filterValue)
         {
-            if (!IsValidOption(filterKey, validFilterKeys) || filterValue == null || filterValue == string.Empty)
+            if (!validator.IsValidParam("filterkey", filterKey) || filterValue == null || filterValue == string.Empty)
                 return characters;
             else
             {
@@ -204,7 +124,7 @@ namespace ActorsGallery.Data.MySqlDataService
 
         public CharacterDTO CreateCharacter(CharacterDTO input, out string responseMsg)
         {
-            if (ValidateInput(input, out responseMsg) == true)
+            if (validator.ValidateCharacterObj(input, out responseMsg) == true)
             {
                 // Validation checks passed. Create new Character record
                 Character newCharacter = new Character
@@ -215,12 +135,12 @@ namespace ActorsGallery.Data.MySqlDataService
                     StateOfOrigin = input.StateOfOrigin,
                     Gender = input.Gender,
                     Created = DateTime.UtcNow,
-                    Location = FindLocationById(input.LocationId)
+                    Location = fetcher.FetchLocationById(input.LocationId)
                 };
                 context.Characters.Add(newCharacter);
                 context.SaveChanges();
 
-
+                // Display new record using public-facing DTO, rather than internal data representation 
                 return new CharacterDTO
                 {
                     Id = newCharacter.Id,
@@ -254,7 +174,7 @@ namespace ActorsGallery.Data.MySqlDataService
               - Return updated character record
              */
 
-            Character character = FetchCharacterById(characterId);
+            Character character = fetcher.FetchCharacterById(characterId);
 
             return new CharacterDTO { };
         }
