@@ -66,7 +66,7 @@ namespace ActorsGallery.Data.MySqlDataService
 
 
         // Allow sorting by FirstName, LastName or Gender
-        public List<Character> SortCharacters(List<Character> characters, string sortKey, string sortOrder)
+        private List<Character> SortCharacters(List<Character> characters, string sortKey, string sortOrder)
         {
             if (!validator.IsValidParam("sortkey", sortKey) || !validator.IsValidParam("sortorder", sortOrder))
                 return characters;
@@ -99,10 +99,10 @@ namespace ActorsGallery.Data.MySqlDataService
 
 
         // Allow filtering by Gender, Status or Location
-        public List<Character> FilterCharacters(List<Character> characters, string filterKey, string filterValue)
+        private List<Character> FilterCharacters(List<Character> characters, string filterKey, string filterValue)
         {
             if (!validator.IsValidParam("filterkey", filterKey) || filterValue == null || filterValue == string.Empty)
-                return characters;
+                return new List<Character> { };
             else
             {
                 switch (filterKey)
@@ -124,7 +124,11 @@ namespace ActorsGallery.Data.MySqlDataService
 
         public CharacterDTO CreateCharacter(CharacterDTO input, out string responseMsg)
         {
-            if (validator.ValidateCharacterObj(input, out responseMsg) == true)
+            if (!validator.ValidateCharacterObj(input, out responseMsg))
+            {
+                return null;
+            }
+            else
             {
                 // Validation checks passed. Create new Character record
                 Character newCharacter = new Character
@@ -153,10 +157,6 @@ namespace ActorsGallery.Data.MySqlDataService
                     LocationName = (newCharacter.Location != null) ? newCharacter.Location.Name : string.Empty,
                     Created = newCharacter.Created
                 };
-            }
-            else
-            {                
-                return null;
             }
         }
     

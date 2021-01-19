@@ -4,5 +4,32 @@
         <name>ActorsGallery</name>
     </assembly>
     <members>
+        <!-- Badly formed XML comment ignored for member "M:ActorsGallery.Controllers.CharactersController.Get(System.String,System.String,System.String,System.String)" -->
+        <member name="M:ActorsGallery.Controllers.CharactersController.Post(ActorsGallery.Core.DTOs.CharacterDTO)">
+            <summary>
+            Create a new character with the properties and values supplied in <c>characterObj</c>.  
+            </summary>
+            <param name="characterObj">A JSON object containing <c>FirstName</c>, <c>LastName</c>, <c>Status</c>, <c>StateOfOrigin</c>, <c>Gender</c> and <c>LocationId</c> properties.</param>
+            <returns>A JSON object whose <c>Payload</c> property contains the newly created <c>Character</c> object, with missing properties included.</returns>
+            <response code="201">Success! Operation completed successfully</response> 
+            <response code="400">Bad request! Check for any error, and try again.</response>
+        </member>
+        <member name="M:ActorsGallery.Controllers.CharactersController.Put(System.String,ActorsGallery.Core.DTOs.CharacterDTO)">
+            <summary>
+            Update an existing character with the properties and values supplied in <c>characterObj</c>.  
+            </summary>
+            <param name="id">The <c>id</c> of the character to be updated.</param>
+            <param name="characterObj">A JSON object containing <c>FirstName</c>, <c>LastName</c>, <c>Status</c>, <c>StateOfOrigin</c>, <c>Gender</c> and <c>LocationId</c> properties.</param>
+            <returns>A JSON object whose <c>Payload</c> property contains the updated <c>Character</c> object, with missing properties included.</returns>
+            <response code="400">Bad request! Check for any error, and try again.</response>
+        </member>
+        <member name="M:ActorsGallery.Controllers.CharactersController.Delete(System.String)">
+            <summary>
+            Delete a character with the specified <c>id</c>   
+            </summary>
+            <param name="id">The <c>id</c> of the character to be deleted.</param>
+            <returns>A JSON object whose <c>Payload</c> property has no value.</returns>
+            <response code="400">Bad request! Check for any error, and try again.</response>
+        </member>
     </members>
 </doc>
