@@ -31,5 +31,32 @@
             <returns>A JSON object whose <c>Payload</c> property has no value.</returns>
             <response code="400">Bad request! Check for any error, and try again.</response>
         </member>
+        <member name="M:ActorsGallery.Controllers.EpisodesController.Get">
+            <summary>
+            Fetch all episodes, sorted in ascending order of <c>releaseDate</c>.
+            </summary>
+            <returns>A JSON object whose <c>Payload</c> property contains a list of <c>Episode</c> objects, sorted in ascending order of <c>releaseDate</c>.</returns>
+            <response code="200">Success! Operation completed successfully</response> 
+            <response code="400">Bad request! Check for any error, and try again.</response>
+        </member>
+        <member name="M:ActorsGallery.Controllers.EpisodesController.Get(System.String)">
+            <summary>
+            Fetch all episodes featuring a particular character, sorted in ascending order of <c>releaseDate</c>.
+            </summary>
+            <param name="query">The search expression to filter results by. It must be in the format <c>char_id:{value}</c> or <c>char_name:{value}</c>.</param>
+            <example>
+                <code>GET:  /api/episodes?query=char_id:5</code>
+                <code>GET:  /api/episodes?query=char_name:jackson</code>
+            </example>
+            <returns>A JSON object whose <c>Payload</c> property contains a list of <c>Episode</c> objects matching the query, sorted in ascending order of <c>releaseDate</c>.</returns>
+            <response code="200">Success! Operation completed successfully</response> 
+            <response code="404">Not found! The specified character did not feature .</response>
+            <response code="400">Bad request! Check for any error, and try again.</response>
+        </member>
+        <member name="M:ActorsGallery.Controllers.EpisodesController.Forbidden(ActorsGallery.Data.Utilities.ResponseBody)">
+            <summary>
+            A custom HTTP handler for generating 403Forbidden responses where the built-in handlers are inadequate
+            </summary>
+        </member>
     </members>
 </doc>
