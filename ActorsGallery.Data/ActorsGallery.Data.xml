@@ -4,5 +4,25 @@
         <name>ActorsGallery.Data</name>
     </assembly>
     <members>
+        <member name="T:ActorsGallery.Data.Utilities.ResponseBody">
+            <summary>
+            The default response body for all requests to this API with Status, Message and Data fields 
+            </summary>
+        </member>
+        <member name="P:ActorsGallery.Data.Utilities.ResponseBody.Status">
+            <summary>
+            An one-word indication of whether the operation succeeded (normal) or failed (error)
+            </summary>
+        </member>
+        <member name="P:ActorsGallery.Data.Utilities.ResponseBody.Payload">
+            <summary>
+            This dynamic property, if not null, contains the payload returned for a given request
+            </summary>
+        </member>
+        <member name="P:ActorsGallery.Data.Utilities.ResponseBody.Message">
+            <summary>
+            A one-sentence confirmation if the operation succeeded; otherwise a listing of error messages
+            </summary>
+        </member>
     </members>
 </doc>
