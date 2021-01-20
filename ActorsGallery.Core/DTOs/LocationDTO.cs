@@ -24,4 +24,21 @@ namespace ActorsGallery.Core.DTOs
         [Display(Name = "Created On")]
         public DateTime Created { get; set; }
     }
+
+
+
+
+    public class LocationRequestBody
+    {
+        [Required, Display(Name = "Location Name")]
+        public string Name { get; set; }
+
+
+        [Required]
+        public string Latitude { get; set; }
+
+
+        [Required]
+        public string Longitude { get; set; }
+    }
 }

@@ -32,4 +32,19 @@ namespace ActorsGallery.Core.DTOs
         [Display(Name = "Number of Characters")]
         public int NumOfCharacters { get; set; }
     }
+
+
+    public class EpisodeRequestBody
+    {
+        [Required, Display(Name = "Episode Title")]
+        public string Name { get; set; }
+
+
+        [Required, Display(Name = "Release Date")]
+        public string ReleaseDate { get; set; }
+
+
+        [Required, Display(Name = "Episode Code")]
+        public string EpisodeCode { get; set; }
+    }
 }

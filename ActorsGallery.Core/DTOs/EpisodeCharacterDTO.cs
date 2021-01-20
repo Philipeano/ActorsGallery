@@ -28,4 +28,15 @@ namespace ActorsGallery.Core.DTOs
         [Display(Name = "Date Assigned")]
         public DateTime Created { get; set; }
     }
+
+
+    public class EpisodeRoleRequestBody
+    {
+        [Required, Display(Name = "Character Id")]
+        public string CharacterId { get; set; }
+
+
+        [Required, Display(Name = "Assigned Role")]
+        public string RoleName { get; set; }
+    }
 }
