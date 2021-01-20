@@ -3,7 +3,6 @@ using ActorsGallery.Data.Contracts;
 using ActorsGallery.Data.Utilities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Collections.Generic;
 using System.Threading;
 
@@ -21,6 +20,21 @@ namespace ActorsGallery.Controllers
         {
             episodeData = episodeService;
             formatter = new Formatter();
+        }
+
+
+        /// <summary>
+        /// A custom HTTP handler for generating 403Forbidden responses where the built-in handlers are inadequate
+        /// </summary>
+        private ActionResult Forbidden(ResponseBody responseBody)
+        {
+            CancellationTokenSource source = new CancellationTokenSource();
+            CancellationToken token = source.Token;
+            Response.StatusCode = 403;
+            Response.ContentType = "application/json";
+            _ = Response.WriteAsync(responseBody.ToString(), System.Text.Encoding.Default, token);
+            source.Dispose();
+            return null;
         }
 
 
@@ -51,7 +65,6 @@ namespace ActorsGallery.Controllers
         /// </example>
         /// <returns>A JSON object whose <c>Payload</c> property contains a list of <c>Episode</c> objects matching the query, sorted in ascending order of <c>releaseDate</c>.</returns>
         /// <response code="200">Success! Operation completed successfully</response> 
-        /// <response code="404">Not found! The specified character did not feature .</response>
         /// <response code="400">Bad request! Check for any error, and try again.</response>
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ResponseBody))]
         [HttpGet("api/episodes?query={query_expression}")]
@@ -136,20 +149,6 @@ namespace ActorsGallery.Controllers
             {
                 return BadRequest(formatter.Render(message));
             }
-        }
-
-        /// <summary>
-        /// A custom HTTP handler for generating 403Forbidden responses where the built-in handlers are inadequate
-        /// </summary>
-        private ActionResult Forbidden(ResponseBody responseBody)
-        {
-            CancellationTokenSource source = new CancellationTokenSource();
-            CancellationToken token = source.Token;
-            Response.StatusCode = 403;
-            Response.ContentType = "application/json";
-            _ = Response.WriteAsync(responseBody.ToString(), System.Text.Encoding.Default, token);
-            source.Dispose();
-            return null;
         }
 
 
