@@ -2,7 +2,6 @@
 using ActorsGallery.Core.Models;
 using ActorsGallery.Data.Contracts;
 using ActorsGallery.Data.Utilities;
-using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -51,40 +50,36 @@ namespace ActorsGallery.Data.MySqlDataService
 
         public List<EpisodeDTO> SearchByCharacter(string searchKey, string searchValue)
         {
-            // Fetch all available episodes with all assigned characters
-            List<Episode> episodes = fetcher.FetchAllEpisodesWithAllCharacters();
+            // Fetch all available roles in all episodes
+            List<EpisodeCharacter> roles = new List<EpisodeCharacter> { };
+            List<EpisodeDTO> resultSet = new List<EpisodeDTO> { };
 
             switch (searchKey)
             {                
                 case "id": // Search by Character's Id
-                    foreach (var episode in episodes)
-                    {
-                        episode.EpisodeCharacters
-                            .Where(ec => ec.Character.Id.ToString() == searchValue);
-                    }
+                    roles = fetcher.FetchAllRoles()
+                        .Where(r => r.Character.Id.ToString() == searchValue)
+                        .ToList();
                     break;                
                 case "name": // Search by Character's First Name or Last Name
-                    foreach (var episode in episodes)
-                    {
-                        episode.EpisodeCharacters
-                            .Where(ec => ec.Character.FirstName == searchValue || ec.Character.LastName == searchValue);
-                    }
+                    roles = fetcher.FetchAllRoles()
+                        .Where(r => r.Character.FirstName.ToString() == searchValue.ToString() || 
+                        r.Character.LastName.ToString() == searchValue.ToString()).ToList();
                     break;
             }
 
             // Render results using public-facing DTOs, rather than internal data representation 
-            List<EpisodeDTO> resultSet = new List<EpisodeDTO> { };
-            foreach (var episode in episodes)
+            foreach (var role in roles)
             {
                 resultSet.Add(new EpisodeDTO
                 {
-                    Id = episode.Id,
-                    Name = episode.Name,
-                    ReleaseDate = episode.ReleaseDate.ToString("D"),
-                    EpisodeCode = episode.EpisodeCode,
-                    NumOfCharacters = episode.EpisodeCharacters.Count,
-                    NumOfComments = episode.EpisodeComments.Count,
-                    Created = episode.Created
+                    Id = role.EpisodeId,
+                    Name = role.Episode.Name,
+                    ReleaseDate = role.Episode.ReleaseDate.ToString("D"),
+                    EpisodeCode = role.Episode.EpisodeCode,
+                    NumOfCharacters = (role.Episode.EpisodeCharacters == null) ? 0 : role.Episode.EpisodeCharacters.Count,
+                    NumOfComments = (role.Episode.EpisodeComments == null) ? 0 : role.Episode.EpisodeComments.Count,
+                    Created = role.Episode.Created
                 });
             }
             return resultSet;
@@ -105,7 +100,7 @@ namespace ActorsGallery.Data.MySqlDataService
 
             responseMsg = $"{validationMsg1}{validationMsg2}{validationMsg3}";
 
-            if (!validationResult1 || !validationResult2 || !validationResult3)
+            if (!validationResult1 || !validationResult2 || validationResult3)
             {
                 return null;
             }

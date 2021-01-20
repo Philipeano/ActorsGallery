@@ -18,7 +18,7 @@ namespace ActorsGallery.Data.Contracts
 
 
         // Fetch all episodes featuring all characters, sorted by ReleaseDate in ascending order
-        public List<Episode> FetchAllEpisodesWithAllCharacters();
+        public List<EpisodeCharacter> FetchAllRoles();
 
 
         // Fetch specific episode

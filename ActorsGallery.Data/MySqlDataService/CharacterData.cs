@@ -27,10 +27,11 @@ namespace ActorsGallery.Data.MySqlDataService
             // Fetch all characters 
             List<Character> characters = fetcher.FetchAllCharacters();
 
-            if (filterKey.ToString() != "none" && filterValue.ToString() != "none")
+            if (filterKey.ToString() != "none")
             {
                 // Apply filter on result set, using 'filterkey' and 'filterValue' specified by user  
                 characters = FilterCharacters(characters, filterKey, filterValue);
+                if (characters == null) return null;
             }
 
             if (sortKey.ToString() == "default" && sortOrder.ToString() == "default")
@@ -42,6 +43,7 @@ namespace ActorsGallery.Data.MySqlDataService
             {
                 // Sort result set by the 'sortKey' and 'sortOrder' specified by user  
                 characters = SortCharacters(characters, sortKey, sortOrder);
+                if (characters == null) return null;
             }
 
             // Render results using public-facing DTOs, rather than internal data representation 
@@ -69,29 +71,26 @@ namespace ActorsGallery.Data.MySqlDataService
         private List<Character> SortCharacters(List<Character> characters, string sortKey, string sortOrder)
         {
             if (!validator.IsValidParam("sortkey", sortKey) || !validator.IsValidParam("sortorder", sortOrder))
-                return characters;
+                return null;
             else
             {
                 switch (sortKey)
                 {
                     case "firstname":
                         if (sortOrder.ToLower() == "asc" || sortOrder.ToLower() == "ascending")
-                            characters.OrderBy(c => c.FirstName);
+                            return characters.OrderBy(c => c.FirstName).ToList();
                         else
-                            characters.OrderByDescending(c => c.FirstName);
-                        break;
+                            return characters.OrderByDescending(c => c.FirstName).ToList();
                     case "lastname":
                         if (sortOrder.ToLower() == "asc" || sortOrder.ToLower() == "ascending")
-                            characters.OrderBy(c => c.LastName);
+                            return characters.OrderBy(c => c.LastName).ToList();
                         else
-                            characters.OrderByDescending(c => c.LastName);
-                        break;
+                            return characters.OrderByDescending(c => c.LastName).ToList();
                     case "gender":
                         if (sortOrder.ToLower() == "asc" || sortOrder.ToLower() == "ascending")
-                            characters.OrderBy(c => c.Gender);
+                            return characters.OrderBy(c => c.Gender).ToList();
                         else
-                            characters.OrderByDescending(c => c.Gender);
-                        break;
+                            return characters.OrderByDescending(c => c.Gender).ToList();
                 }
                 return characters;
             }
@@ -102,20 +101,17 @@ namespace ActorsGallery.Data.MySqlDataService
         private List<Character> FilterCharacters(List<Character> characters, string filterKey, string filterValue)
         {
             if (!validator.IsValidParam("filterkey", filterKey) || filterValue == null || filterValue == string.Empty)
-                return new List<Character> { };
+                return null;
             else
             {
                 switch (filterKey)
                 {
                     case "gender":
-                        characters.Where(c => c.Gender == filterValue);
-                        break;
+                        return characters.Where(c => c.Gender.ToLower() == filterValue.ToLower()).ToList();
                     case "status":
-                        characters.Where(c => c.Status == filterValue);
-                        break;
+                        return characters.Where(c => c.Status.ToLower() == filterValue.ToLower()).ToList();
                     case "location":
-                        characters.Where(c => c.Location.Name == filterValue);
-                        break;
+                        return characters.Where(c => c.Location.Name.ToLower() == filterValue.ToLower()).ToList();
                 }
                 return characters;
             }

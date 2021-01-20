@@ -18,13 +18,9 @@ namespace ActorsGallery.Data.Utilities
 
         private readonly IFetcher fetcher;
 
-        public Validator()
+        public Validator(IFetcher fetcherService)
         {
-        }
-
-        public Validator(IFetcher dataFetcher)
-        {
-            fetcher = dataFetcher;
+            fetcher = fetcherService;
         }
 
         public bool IsValidEntry(string entryName, string entryValue)
@@ -32,19 +28,21 @@ namespace ActorsGallery.Data.Utilities
             switch (entryName)
             {
                 case "gender":
-                    if (entryValue == null || entryValue == string.Empty || !validGenderValues.Contains(entryValue.ToLower()))
+                    if (entryValue == null || entryValue == string.Empty ||
+                        (validGenderValues.FindIndex(x => x.Equals(entryValue, StringComparison.OrdinalIgnoreCase)) == -1))
                         return false;
                     break;
 
                 case "status":
-                    if (entryValue == null || entryValue == string.Empty || !validStatusValues.Contains(entryValue.ToLower()))
+                    if (entryValue == null || entryValue == string.Empty ||
+                        (validStatusValues.FindIndex(x => x.Equals(entryValue, StringComparison.OrdinalIgnoreCase)) == -1))
                         return false;
                     break;
 
                 case "origin":
                     if (entryValue == null || entryValue == string.Empty)
                         return true;
-                    else if (!validNigerianStates.Contains(entryValue.ToLower()))
+                    else if (validNigerianStates.FindIndex(x => x.Equals(entryValue, StringComparison.OrdinalIgnoreCase)) == -1)
                         return false;
                     break;
             }
@@ -57,17 +55,20 @@ namespace ActorsGallery.Data.Utilities
             switch (type)
             {
                 case "sortkey":
-                    if (value == null || value == string.Empty || !validSortKeys.Contains(value.ToLower()))
+                    if (value == null || value == string.Empty ||
+                        (validSortKeys.FindIndex(x => x.Equals(value, StringComparison.OrdinalIgnoreCase)) == -1))
                         return false;
                     break;
 
                 case "sortorder":
-                    if (value == null || value == string.Empty || !validSortOrders.Contains(value.ToLower()))
+                    if (value == null || value == string.Empty ||
+                        (validSortOrders.FindIndex(x => x.Equals(value, StringComparison.OrdinalIgnoreCase)) == -1))
                         return false;
                     break;
 
                 case "filterkey":
-                    if (value == null || value == string.Empty || !validFilterKeys.Contains(value.ToLower()))
+                    if (value == null || value == string.Empty ||
+                        (validFilterKeys.FindIndex(x => x.Equals(value, StringComparison.OrdinalIgnoreCase)) == -1))
                         return false;
                     break;
             }
@@ -87,16 +88,21 @@ namespace ActorsGallery.Data.Utilities
                 errorMsg = string.Empty;
 
                 if (input.FirstName == string.Empty || input.LastName == string.Empty)
-                    errorMsg = "Both 'First Name' and 'Last Name' are required. \n";
+                    errorMsg = "Both 'First Name' and 'Last Name' are required. <br />";
 
                 if (!IsValidEntry("status", input.Status))
-                    errorMsg = $"{errorMsg}'Status' must be any of 'Active', 'Dead' or 'Unknown'. \n";
+                    errorMsg = $"{errorMsg}'Status' must be any of 'Active', 'Dead' or 'Unknown'. <br />";
 
                 if (!IsValidEntry("origin", input.StateOfOrigin))
-                    errorMsg = $"{errorMsg}'State of Origin', if provided, must be the name of a Nigerian state. \n";
+                    errorMsg = $"{errorMsg}'State of Origin', if provided, must be the name of a Nigerian state. <br />";
 
                 if (!IsValidEntry("gender", input.Gender))
-                    errorMsg = $"{errorMsg}'Gender' must be either 'Male' or 'Female'. \n";
+                    errorMsg = $"{errorMsg}'Gender' must be either 'Male' or 'Female'. <br />";
+
+                if (input.LocationId == null || !long.TryParse(input.LocationId, out long valLocationId) || valLocationId < 1)
+                    errorMsg = $"{errorMsg}'Location Id' must be a positive integer. <br />";
+                else if (fetcher.FetchLocationById(valLocationId) == null)
+                    errorMsg = $"{errorMsg}'Location Id' does not match any existing location. <br />";
 
                 return errorMsg.Trim() == string.Empty;
             }
@@ -115,14 +121,14 @@ namespace ActorsGallery.Data.Utilities
                 errorMsg = string.Empty;
 
                 if (input.Name == string.Empty)
-                    errorMsg = "'Episode Name' is required. \n";
+                    errorMsg = "'Episode Name' is required. <br />";
                 else if (fetcher.IsAlreadyUsed("name", input.Name))
-                    errorMsg = "'Episode Name' is already in use. \n";
+                    errorMsg = "'Episode Name' is already in use. <br />";
 
                 if (input.EpisodeCode == string.Empty)
-                    errorMsg = $"{errorMsg}'Episode Code' is required. \n";
+                    errorMsg = $"{errorMsg}'Episode Code' is required. <br />";
                 else if (fetcher.IsAlreadyUsed("code", input.EpisodeCode))
-                    errorMsg = $"{errorMsg}'Episode Code' is already in use. \n";
+                    errorMsg = $"{errorMsg}'Episode Code' is already in use. <br />";
 
                 try
                 {
@@ -130,7 +136,7 @@ namespace ActorsGallery.Data.Utilities
                 }
                 catch
                 {
-                    errorMsg = $"{errorMsg}'Release Date' is not a valid date. \n";
+                    errorMsg = $"{errorMsg}'Release Date' is not a valid date. <br />";
                 }
 
                 return errorMsg.Trim() == string.Empty;
@@ -143,9 +149,9 @@ namespace ActorsGallery.Data.Utilities
             errorMsg = string.Empty;
 
             if (episodeId == null || !long.TryParse(episodeId, out long valEpisodeId) || valEpisodeId < 1)
-                errorMsg = "'Episode Id' must be a positive integer. \n";
+                errorMsg = "'Episode Id' must be a positive integer. <br />";
             else if (fetcher.FetchEpisodeById(valEpisodeId) == null)
-                errorMsg = "'Episode Id' does not match any existing episode. \n";
+                errorMsg = "'Episode Id' does not match any existing episode. <br />";
 
             return errorMsg.Trim() == string.Empty;
         }
@@ -162,13 +168,13 @@ namespace ActorsGallery.Data.Utilities
                 errorMsg = string.Empty;
 
                 if (input.CommentText == string.Empty)
-                    errorMsg = $"{errorMsg}'Comment' is required. Up to 250 characters allowed. \n";
+                    errorMsg = $"{errorMsg}'Comment Text' is required. Up to 250 characters allowed. <br />";
 
                 if (input.CommenterName == string.Empty)
-                    errorMsg = $"{errorMsg}'Commenter's Name' is required. \n";
+                    errorMsg = $"{errorMsg}'Commenter's Name' is required. <br />";
 
                 if (ipAddress == string.Empty)
-                    errorMsg = $"{errorMsg}'Commenter's IP Address' cannot be determined. \n";
+                    errorMsg = $"{errorMsg}'Commenter's IP Address' cannot be determined. <br />";
             }
 
             return errorMsg.Trim() == string.Empty;
@@ -186,12 +192,12 @@ namespace ActorsGallery.Data.Utilities
                 errorMsg = string.Empty;
 
                 if (input.CharacterId == null || !long.TryParse(input.CharacterId, out long valCharacterId) || valCharacterId < 1)
-                    errorMsg = "'Character Id' must be a positive integer. \n";
+                    errorMsg = "'Character Id' must be a positive integer. <br />";
                 else if (fetcher.FetchCharacterById(valCharacterId) == null)
-                    errorMsg = "'Character Id' does not match any existing character. \n";
+                    errorMsg = "'Character Id' does not match any existing character. <br />";
 
                 if (input.RoleName == string.Empty)
-                    errorMsg = $"{errorMsg}'Assigned Role' is required. Specify the role name. \n";
+                    errorMsg = $"{errorMsg}'Assigned Role' is required. Specify the role name. <br />";
             }
 
             return errorMsg.Trim() == string.Empty;
@@ -210,19 +216,18 @@ namespace ActorsGallery.Data.Utilities
                 errorMsg = string.Empty;
 
                 if (input.Name == string.Empty)
-                    errorMsg = "'Location Name' is required. \n";
+                    errorMsg = "'Location Name' is required. <br />";
 
-                if (double.TryParse(input.Latitude, out double valLatitude))
-                    errorMsg = $"{errorMsg}'Latitude' must be a valid double-precision number. \n";
+                if (!double.TryParse(input.Latitude, out double valLatitude))
+                    errorMsg = $"{errorMsg}'Latitude' must be a valid double-precision number. <br />";
+                else if (valLatitude < -90 || valLatitude > 90)
+                    errorMsg = $"{errorMsg}'Latitude' must be in the range -90 to +90. <br />";
 
-                if (valLatitude < -90 || valLatitude > 90)
-                    errorMsg = $"{errorMsg}'Latitude' must be in the range -90 to +90. \n";
-
-                if (double.TryParse(input.Longitude, out double valLongitude))
-                    errorMsg = $"{errorMsg}'Longitude' must be a valid double-precision number. \n";
+                if (!double.TryParse(input.Longitude, out double valLongitude))
+                    errorMsg = $"{errorMsg}'Longitude' must be a valid double-precision number. <br />";
 
                 if (valLongitude < -180 || valLongitude > 180)
-                    errorMsg = $"{errorMsg}'Longitude' must be in the range -180 to +180. \n";
+                    errorMsg = $"{errorMsg}'Longitude' must be in the range -180 to +180. <br />";
 
                 return errorMsg.Trim() == string.Empty;
             }
@@ -255,13 +260,14 @@ namespace ActorsGallery.Data.Utilities
 
                 if (queryParts[0] == "char_id" && (!int.TryParse(queryParts[1], out int valCharId) || valCharId < 1))
                 {
-                    errorMsg= "Your query is invalid. \nThe 'id' value must be a positive integer.";
+                    errorMsg= "Your query is invalid. <br />The 'id' value must be a positive integer.";
                     return false;
 
                 }
                 else
                 {
-                    queryParts.CopyTo(parts, 0);
+                    parts = new string[] { queryParts[0], queryParts[1] };
+                    //queryParts.CopyTo(parts, 0);
                     errorMsg = string.Empty;
                     return true;
                 }

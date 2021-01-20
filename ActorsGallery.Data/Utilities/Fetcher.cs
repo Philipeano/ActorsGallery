@@ -46,16 +46,14 @@ namespace ActorsGallery.Data.Utilities
         }
 
 
-        // Fetch all episodes featuring all characters, sorted by ReleaseDate in ascending order
-        public List<Episode> FetchAllEpisodesWithAllCharacters()
+        public List<EpisodeCharacter> FetchAllRoles()
         {
-            return context.Episodes
-                .Include(e => e.EpisodeCharacters)
-                .ThenInclude(ec => ec.Character)
-                .OrderBy(e => e.ReleaseDate)
+            return context.EpisodeCharacters
+                .Include(ec => ec.Episode)
+                .Include(ec => ec.Character)
+                .OrderBy(ec => ec.Episode.ReleaseDate)
                 .ToList();
         }
-
 
         // Fetch specific episode
         public Episode FetchEpisodeById(long id)
@@ -141,7 +139,7 @@ namespace ActorsGallery.Data.Utilities
             bool result = context.EpisodeCharacters
                 .Any(ec => ec.EpisodeId == episodeId && ec.CharacterId == characterId);
 
-            errorMsg = result ? "This character already has a role in this episode. \n" : string.Empty;
+            errorMsg = result ? "This character already has a role in this episode. <br />" : string.Empty;
 
             return result;
         }
