@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection;
 using ActorsGallery.Data.Contracts;
 using ActorsGallery.Data.MySqlDataService;
+using ActorsGallery.Data.Utilities;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -46,6 +47,7 @@ namespace ActorsGallery
             services.AddScoped<IEpisodeData, EpisodeData>();
             services.AddScoped<ICommentData, CommentData>();
             services.AddScoped<ILocationData, LocationData>();
+            services.AddScoped<IFetcher, Fetcher>();
 
             services.AddSwaggerGen(setupAction =>
             {
@@ -55,7 +57,9 @@ namespace ActorsGallery
                     {
                         Title = "ActorsGallery API",
                         Version = "1",
-                        Description = "This API enables users fetch information about motion picture episodes and characters, and post comments.",
+                        Description = "This API enables users fetch information about motion picture episodes and characters, and post comments. " +
+                        "Please note that this application is a work in progress. " +
+                        "Consequently, certain features, particularly 'update' and 'delete' operations, will be available in the next version of the API.",
                         Contact = new Microsoft.OpenApi.Models.OpenApiContact()
                         {
                             Email = "philipeano@gmail.com",

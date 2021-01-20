@@ -59,9 +59,15 @@ namespace ActorsGallery.Controllers
 
 
         // PUT: api/comments/{id}
+        /// <summary>
+        /// Update an existing comment with the properties and values supplied in the request body.THIS FEATURE IS NOT SUPPORTED AT THE MOMENT.
+        /// </summary>
+        /// <param name = "id" > The 'id' of the comment to be updated.</param>
+        /// <param name="requestBody">A JSON object containing the comment object to be updated.</param>
+        /// <response code = "400" > Bad request! Check for any error, and try again.</response>
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ResponseBody))]
         [HttpPut("{id}")]
-        public ActionResult UpdateComment([FromRoute] string id, [FromBody] CommentDTO requestBody)
+        public ActionResult UpdateComment([FromRoute] string id, [FromBody] CommentRequestBody requestBody)
         {
             return BadRequest(formatter
                 .Render("Sorry, this operation is currently not supported. It will be supported in a future version of this API."));
@@ -69,6 +75,10 @@ namespace ActorsGallery.Controllers
 
 
         // DELETE: api/comments/{id}
+        /// <summary>
+        /// Delete a comment with the specified 'id'. THIS FEATURE IS NOT SUPPORTED AT THE MOMENT.   
+        /// </summary>
+        /// <response code="400">Bad request! Check for any error, and try again.</response>
         [HttpDelete("{id}")]
         public ActionResult DeleteComment([FromRoute] string id)
         {

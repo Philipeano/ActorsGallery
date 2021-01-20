@@ -90,7 +90,7 @@ namespace ActorsGallery.Controllers
         /// <response code="400">Bad request! Check for any error, and try again.</response>
         [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(ResponseBody))]
         [HttpPost]
-        public ActionResult PostEpisode([FromBody] EpisodeDTO requestBody)
+        public ActionResult PostEpisode([FromBody] EpisodeRequestBody requestBody)
         {
             EpisodeDTO newEpisode = episodeData.CreateEpisode(requestBody, out string message);
 
@@ -117,7 +117,7 @@ namespace ActorsGallery.Controllers
         /// <response code="400">Bad request! Check for any error, and try again.</response>
         [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(ResponseBody))]
         [HttpPost("{id}/characters")]
-        public ActionResult PostCharacter([FromRoute] string id, [FromBody] EpisodeCharacterDTO requestBody)
+        public ActionResult PostCharacter([FromRoute] string id, [FromBody] EpisodeRoleRequestBody requestBody)
         {
             EpisodeCharacterDTO newRole = episodeData.AddCharacter(id, requestBody, out string message);
 
@@ -149,7 +149,7 @@ namespace ActorsGallery.Controllers
 
         [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(ResponseBody))]
         [HttpPost("{id}/comments")]
-        public ActionResult PostComment([FromRoute] string id, [FromBody] CommentDTO requestBody)
+        public ActionResult PostComment([FromRoute] string id, [FromBody] CommentRequestBody requestBody)
         {
             string userIpAddress = Request.HttpContext.Connection.RemoteIpAddress.ToString(); ;
 
@@ -172,9 +172,15 @@ namespace ActorsGallery.Controllers
 
 
         // PUT: api/episodes/{id}
+        /// <summary>
+        /// Update an existing episode with the properties and values supplied in the request body. THIS FEATURE IS NOT SUPPORTED AT THE MOMENT.
+        /// </summary>
+        /// <param name = "id" > The 'id' of the episode to be updated.</param>
+        /// <param name="requestBody">A JSON object containing the episode object to be updated.</param>
+        /// <response code = "400" > Bad request! Check for any error, and try again.</response>
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ResponseBody))]
         [HttpPut("{id}")]
-        public ActionResult UpdateEpisode([FromRoute] string id, [FromBody] EpisodeDTO requestBody)
+        public ActionResult UpdateEpisode([FromRoute] string id, [FromBody] EpisodeRequestBody requestBody)
         {
             return BadRequest(formatter
                 .Render("Sorry, this operation is currently not supported. It will be supported in a future version of this API."));
@@ -182,6 +188,10 @@ namespace ActorsGallery.Controllers
 
 
         // DELETE: api/episodes/{id}
+        /// <summary>
+        /// Delete an episode with the specified 'id'. THIS FEATURE IS NOT SUPPORTED AT THE MOMENT.   
+        /// </summary>
+        /// <response code="400">Bad request! Check for any error, and try again.</response>
         [HttpDelete("{id}")]
         public ActionResult DeleteEpisode([FromRoute] string id)
         {

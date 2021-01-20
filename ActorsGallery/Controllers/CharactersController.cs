@@ -66,13 +66,13 @@ namespace ActorsGallery.Controllers
         /// <summary>
         /// Create a new character with the properties and values supplied in the request body.  
         /// </summary>
-        /// <param name="requestBody">A JSON object containing 'FirstName', 'LastName', 'Status', 'StateOfOrigin', 'Gender' and 'LocationId' properties.</param>
+        /// <param name="requestBody">A JSON object containing 'firstName', 'lastName', 'status', 'stateOfOrigin', 'gender' and 'locationId' properties.</param>
         /// <returns>A JSON object whose 'Payload' property contains the newly created 'Character' object, with missing properties included.</returns>
         /// <response code="201">Success! Operation completed successfully</response> 
         /// <response code="400">Bad request! Check for any error, and try again.</response>
         [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(ResponseBody))]
         [HttpPost]
-        public ActionResult Post([FromBody] CharacterDTO requestBody)
+        public ActionResult Post([FromBody] CharacterRequestBody requestBody)
         {
             CharacterDTO newCharacter = characterData.CreateCharacter(requestBody, out string message);
 
@@ -87,37 +87,26 @@ namespace ActorsGallery.Controllers
         }
 
 
-        // PUT: api/characters/id
+        // PUT: api/characters/{id}
         /// <summary>
-        /// Update an existing character with the properties and values supplied in the request body.  
+        /// Update an existing character with the properties and values supplied in the request body.THIS FEATURE IS NOT SUPPORTED AT THE MOMENT.
         /// </summary>
-        /// <param name="id">The 'id' of the character to be updated.</param>
-        /// <param name="requestBody">A JSON object containing 'FirstName', 'LastName', 'Status', 'StateOfOrigin', 'Gender' and 'LocationId' properties.</param>
-        /// <returns>A JSON object whose 'Payload' property contains the updated 'Character' object, with missing properties included.</returns>
-        /// <response code="400">Bad request! Check for any error, and try again.</response>
-        ///// <response code="404">Not found! The specified resource does not exist.</response>
-        ///// <response code="200">Success! Operation completed successfully</response> 
-        //[ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ResponseBody))]
-        //[ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ResponseBody))]
+        /// <param name = "id" > The 'id' of the character to be updated.</param>
+        /// <param name="requestBody">A JSON object containing the character object to be updated.</param>
+        /// <response code = "400" > Bad request! Check for any error, and try again.</response>
         [HttpPut("{id}")]
-        public ActionResult Put([FromRoute] string id, [FromBody] CharacterDTO requestBody)
+        public ActionResult Put([FromRoute] string id, [FromBody] CharacterRequestBody requestBody)
         {
             return BadRequest(formatter
                 .Render("Sorry, this operation is currently not supported. It will be supported in a future version of this API."));
         }
 
 
-        // DELETE: api/characters/id
+        // DELETE: api/characters/{id}
         /// <summary>
-        /// Delete a character with the specified 'id'   
+        /// Delete a character with the specified 'id'. THIS FEATURE IS NOT SUPPORTED AT THE MOMENT.   
         /// </summary>
-        /// <param name="id">The 'id' of the character to be deleted.</param>
-        /// <returns>A JSON object whose 'Payload' property has no value.</returns>
         /// <response code="400">Bad request! Check for any error, and try again.</response>
-        ///// <response code="404">Not found! The specified resource does not exist.</response>
-        ///// <response code="200">Success! Operation completed successfully</response> 
-        //[ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ResponseBody))]
-        //[ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ResponseBody))]
         [HttpDelete("{id}")]
         public ActionResult Delete([FromRoute] string id)
         {

@@ -47,7 +47,7 @@ namespace ActorsGallery.Controllers
         /// <response code="400">Bad request! Check for any error, and try again.</response>
         [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(ResponseBody))]
         [HttpPost]
-        public ActionResult Post([FromBody] LocationDTO requestBody)
+        public ActionResult Post([FromBody] LocationRequestBody requestBody)
         {
             LocationDTO newLocation = locationData.CreateLocation(requestBody, out string message);
 
@@ -63,9 +63,15 @@ namespace ActorsGallery.Controllers
 
 
         // PUT: api/locations/{id}
+        /// <summary>
+        /// Update an existing location with the properties and values supplied in the request body.THIS FEATURE IS NOT SUPPORTED AT THE MOMENT.
+        /// </summary>
+        /// <param name = "id" > The 'id' of the location to be updated.</param>
+        /// <param name="requestBody">A JSON object containing the location object to be updated.</param>
+        /// <response code = "400" > Bad request! Check for any error, and try again.</response>
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ResponseBody))]
         [HttpPut("{id}")]
-        public ActionResult UpdateLocation([FromRoute] string id, [FromBody] LocationDTO requestBody)
+        public ActionResult UpdateLocation([FromRoute] string id, [FromBody] LocationRequestBody requestBody)
         {
             return BadRequest(formatter
                 .Render("Sorry, this operation is currently not supported. It will be supported in a future version of this API."));
@@ -73,6 +79,10 @@ namespace ActorsGallery.Controllers
 
 
         // DELETE: api/locations/{id}
+        /// <summary>
+        /// Delete a location with the specified 'id'. THIS FEATURE IS NOT SUPPORTED AT THE MOMENT.   
+        /// </summary>
+        /// <response code="400">Bad request! Check for any error, and try again.</response>
         [HttpDelete("{id}")]
         public ActionResult DeleteLocation([FromRoute] string id)
         {
