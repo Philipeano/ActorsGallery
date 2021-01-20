@@ -82,7 +82,7 @@ namespace ActorsGallery.Data.MySqlDataService
         }
 
 
-        public CommentDTO AddCommentToEpisode(string episodeId, CommentDTO input, string ipAddress, out string responseMsg)
+        public CommentDTO AddCommentToEpisode(string episodeId, CommentRequestBody input, string ipAddress, out string responseMsg)
         {
             bool validationResult1 = validator.ValidateEpisodeId(episodeId, out string validationMsg1);
             bool validationResult2 = validator.ValidateCommentObj(input, ipAddress, out string validationMsg2);

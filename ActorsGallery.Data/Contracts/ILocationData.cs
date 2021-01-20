@@ -9,10 +9,10 @@ namespace ActorsGallery.Data.Contracts
         public List<LocationDTO> GetAllLocations();
 
 
-        public LocationDTO CreateLocation(LocationDTO input, out string responseMsg);
+        public LocationDTO CreateLocation(LocationRequestBody input, out string responseMsg);
 
 
-        public LocationDTO UpdateLocation(string locationId, LocationDTO input, out string responseMsg);
+        public LocationDTO UpdateLocation(string locationId, LocationRequestBody input, out string responseMsg);
 
 
         public void DeleteLocation(string locationId, out string responseMsg);

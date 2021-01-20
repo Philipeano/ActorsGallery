@@ -76,7 +76,7 @@ namespace ActorsGallery.Data.Utilities
         }
 
 
-        public bool ValidateCharacterObj(CharacterDTO input, out string errorMsg)
+        public bool ValidateCharacterObj(CharacterRequestBody input, out string errorMsg)
         {
             if (input == null)
             {
@@ -109,7 +109,7 @@ namespace ActorsGallery.Data.Utilities
         }
 
 
-        public bool ValidateEpisodeObj(EpisodeDTO input, out string errorMsg)
+        public bool ValidateEpisodeObj(EpisodeRequestBody input, out string errorMsg)
         {
             if (input == null)
             {
@@ -157,7 +157,7 @@ namespace ActorsGallery.Data.Utilities
         }
 
 
-        public bool ValidateCommentObj(CommentDTO input, string ipAddress, out string errorMsg)
+        public bool ValidateCommentObj(CommentRequestBody input, string ipAddress, out string errorMsg)
         {
             if (input == null)
             {
@@ -181,7 +181,7 @@ namespace ActorsGallery.Data.Utilities
         }
 
 
-        public bool ValidateEpisodeCharacterObj(EpisodeCharacterDTO input, out string errorMsg)
+        public bool ValidateEpisodeCharacterObj(EpisodeRoleRequestBody input, out string errorMsg)
         {
             if (input == null)
             {
@@ -204,7 +204,7 @@ namespace ActorsGallery.Data.Utilities
         }
 
 
-        public bool ValidateLocationObj(LocationDTO input, out string errorMsg)
+        public bool ValidateLocationObj(LocationRequestBody input, out string errorMsg)
         {
             if (input == null)
             {

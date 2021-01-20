@@ -86,13 +86,13 @@ namespace ActorsGallery.Data.MySqlDataService
         }
 
 
-        public CommentDTO AddComment(string episodeId, CommentDTO input, string commenterIpAddress, out string responseMsg)
+        public CommentDTO AddComment(string episodeId, CommentRequestBody input, string commenterIpAddress, out string responseMsg)
         {
             return commentData.AddCommentToEpisode(episodeId, input, commenterIpAddress, out responseMsg);
         }
 
 
-        public EpisodeCharacterDTO AddCharacter(string episodeId, EpisodeCharacterDTO input, out string responseMsg)
+        public EpisodeCharacterDTO AddCharacter(string episodeId, EpisodeRoleRequestBody input, out string responseMsg)
         {
             bool validationResult1 = validator.ValidateEpisodeId(episodeId, out string validationMsg1);
             bool validationResult2 = validator.ValidateEpisodeCharacterObj(input, out string validationMsg2);
@@ -135,7 +135,7 @@ namespace ActorsGallery.Data.MySqlDataService
         }
 
 
-        public EpisodeDTO CreateEpisode(EpisodeDTO input, out string responseMsg)
+        public EpisodeDTO CreateEpisode(EpisodeRequestBody input, out string responseMsg)
         {
             if (validator.ValidateEpisodeObj(input, out responseMsg) == true)
             {
@@ -169,7 +169,7 @@ namespace ActorsGallery.Data.MySqlDataService
         }
 
 
-        public EpisodeDTO UpdateEpisode(string episodeId, EpisodeDTO input, out string responseMsg)
+        public EpisodeDTO UpdateEpisode(string episodeId, EpisodeRequestBody input, out string responseMsg)
         {
             responseMsg = string.Empty;
 

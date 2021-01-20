@@ -118,7 +118,7 @@ namespace ActorsGallery.Data.MySqlDataService
         }
 
 
-        public CharacterDTO CreateCharacter(CharacterDTO input, out string responseMsg)
+        public CharacterDTO CreateCharacter(CharacterRequestBody input, out string responseMsg)
         {
             if (!validator.ValidateCharacterObj(input, out responseMsg))
             {
@@ -157,7 +157,7 @@ namespace ActorsGallery.Data.MySqlDataService
         }
     
 
-        public CharacterDTO UpdateCharacter(long characterId, CharacterDTO input, out string responseMsg) 
+        public CharacterDTO UpdateCharacter(long characterId, CharacterRequestBody input, out string responseMsg) 
         {
             responseMsg = string.Empty;
 

@@ -65,7 +65,7 @@ namespace ActorsGallery.Core.DTOs
         public string Gender { get; set; }
 
 
-        [Required, Display(Name = "Location Id")]
+        [Display(Name = "Location Id")]
         public string LocationId { get; set; }
     }
 }

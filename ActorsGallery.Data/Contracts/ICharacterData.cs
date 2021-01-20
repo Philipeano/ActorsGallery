@@ -1,5 +1,4 @@
 ﻿using ActorsGallery.Core.DTOs;
-using ActorsGallery.Core.Models;
 using System.Collections.Generic;
 
 namespace ActorsGallery.Data.Contracts
@@ -11,10 +10,10 @@ namespace ActorsGallery.Data.Contracts
 
 
         // Extra methods necessary for CRUD operations
-        public CharacterDTO CreateCharacter(CharacterDTO input, out string responseMsg);
+        public CharacterDTO CreateCharacter(CharacterRequestBody input, out string responseMsg);
 
 
-        public CharacterDTO UpdateCharacter(long characterId, CharacterDTO input, out string responseMsg);
+        public CharacterDTO UpdateCharacter(long characterId, CharacterRequestBody input, out string responseMsg);
 
 
         public void DeleteCharacter(long characterId, out string responseMsg);
