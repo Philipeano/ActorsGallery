@@ -12,7 +12,7 @@ namespace ActorsGallery.Data.Contracts
         public List<CommentDTO> GetEpisodeComments(string episodeId);
 
 
-        public CommentDTO AddCommentToEpisode(string episodeId, CommentDTO input, string ipAddress, out string responseMsg);
+        public CommentDTO AddCommentToEpisode(string episodeId, CommentRequestBody input, string ipAddress, out string responseMsg);
 
 
         // Extra methods necessary for CRUD operations

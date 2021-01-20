@@ -4,59 +4,155 @@
         <name>ActorsGallery</name>
     </assembly>
     <members>
-        <!-- Badly formed XML comment ignored for member "M:ActorsGallery.Controllers.CharactersController.Get(System.String,System.String,System.String,System.String)" -->
-        <member name="M:ActorsGallery.Controllers.CharactersController.Post(ActorsGallery.Core.DTOs.CharacterDTO)">
+        <member name="M:ActorsGallery.Controllers.CharactersController.Get(System.String,System.String,System.String,System.String)">
             <summary>
-            Create a new character with the properties and values supplied in <c>characterObj</c>.  
+            Fetch all characters, with optional sorting and/or filtering
             </summary>
-            <param name="characterObj">A JSON object containing <c>FirstName</c>, <c>LastName</c>, <c>Status</c>, <c>StateOfOrigin</c>, <c>Gender</c> and <c>LocationId</c> properties.</param>
-            <returns>A JSON object whose <c>Payload</c> property contains the newly created <c>Character</c> object, with missing properties included.</returns>
+            <param name="filter_by">The property to filter results by. It must be assigned any of 'gender', 'status', 'location' or 'none'.</param>
+            <param name="filter_val">The corresponding value of the 'filter_by' parameter, which will be used for fetching the results.</param>
+            <param name="sort_by">The property to sort results by. It must be assigned any of 'firstname', 'lastname', 'gender' or 'default'.</param>
+            <param name="sort_dir">The sort direction to be applied. It must be assigned any of 'asc', 'desc', 'ascending', 'descending' or 'default'.</param>
+            <returns>A JSON object whose 'Payload' property contains a list of 'Character' objects, with the specified sorting or filtering applied.</returns>
+            <response code="200">Success! Operation completed successfully</response> 
+            <response code="400">Bad request! Check for any error, and try again.</response>
+        </member>
+        <member name="M:ActorsGallery.Controllers.CharactersController.Post(ActorsGallery.Core.DTOs.CharacterRequestBody)">
+            <summary>
+            Create a new character with the properties and values supplied in the request body.  
+            </summary>
+            <param name="requestBody">A JSON object containing 'firstName', 'lastName', 'status', 'stateOfOrigin', 'gender' and 'locationId' properties.</param>
+            <returns>A JSON object whose 'Payload' property contains the newly created 'Character' object, with missing properties included.</returns>
             <response code="201">Success! Operation completed successfully</response> 
             <response code="400">Bad request! Check for any error, and try again.</response>
         </member>
-        <member name="M:ActorsGallery.Controllers.CharactersController.Put(System.String,ActorsGallery.Core.DTOs.CharacterDTO)">
+        <member name="M:ActorsGallery.Controllers.CharactersController.Put(System.String,ActorsGallery.Core.DTOs.CharacterRequestBody)">
             <summary>
-            Update an existing character with the properties and values supplied in <c>characterObj</c>.  
+            Update an existing character with the properties and values supplied in the request body.THIS FEATURE IS NOT SUPPORTED AT THE MOMENT.
             </summary>
-            <param name="id">The <c>id</c> of the character to be updated.</param>
-            <param name="characterObj">A JSON object containing <c>FirstName</c>, <c>LastName</c>, <c>Status</c>, <c>StateOfOrigin</c>, <c>Gender</c> and <c>LocationId</c> properties.</param>
-            <returns>A JSON object whose <c>Payload</c> property contains the updated <c>Character</c> object, with missing properties included.</returns>
-            <response code="400">Bad request! Check for any error, and try again.</response>
+            <param name = "id" > The 'id' of the character to be updated.</param>
+            <param name="requestBody">A JSON object containing the character object to be updated.</param>
+            <response code = "400" > Bad request! Check for any error, and try again.</response>
         </member>
         <member name="M:ActorsGallery.Controllers.CharactersController.Delete(System.String)">
             <summary>
-            Delete a character with the specified <c>id</c>   
+            Delete a character with the specified 'id'. THIS FEATURE IS NOT SUPPORTED AT THE MOMENT.   
             </summary>
-            <param name="id">The <c>id</c> of the character to be deleted.</param>
-            <returns>A JSON object whose <c>Payload</c> property has no value.</returns>
             <response code="400">Bad request! Check for any error, and try again.</response>
         </member>
-        <member name="M:ActorsGallery.Controllers.EpisodesController.Get">
+        <member name="M:ActorsGallery.Controllers.CommentsController.Get(System.String)">
             <summary>
-            Fetch all episodes, sorted in ascending order of <c>releaseDate</c>.
+            Fetch all comments, optionally queried with an episode id. The comments are sorted in reverse chronological order by default.
             </summary>
-            <returns>A JSON object whose <c>Payload</c> property contains a list of <c>Episode</c> objects, sorted in ascending order of <c>releaseDate</c>.</returns>
+            <param name="episode_id">An optional episode id to filter the comments by.</param>
+            <example>
+                <code>GET:  /api/comments?episode_id=5</code>
+            </example>
+            <returns>A JSON object whose 'Payload' property contains a list of 'Comment' objects matching the query, sorted in reverse chronological order by default.</returns>
             <response code="200">Success! Operation completed successfully</response> 
+            <response code="400">Bad request! Check for any error, and try again.</response>
+        </member>
+        <member name="M:ActorsGallery.Controllers.CommentsController.UpdateComment(System.String,ActorsGallery.Core.DTOs.CommentRequestBody)">
+            <summary>
+            Update an existing comment with the properties and values supplied in the request body.THIS FEATURE IS NOT SUPPORTED AT THE MOMENT.
+            </summary>
+            <param name = "id" > The 'id' of the comment to be updated.</param>
+            <param name="requestBody">A JSON object containing the comment object to be updated.</param>
+            <response code = "400" > Bad request! Check for any error, and try again.</response>
+        </member>
+        <member name="M:ActorsGallery.Controllers.CommentsController.DeleteComment(System.String)">
+            <summary>
+            Delete a comment with the specified 'id'. THIS FEATURE IS NOT SUPPORTED AT THE MOMENT.   
+            </summary>
             <response code="400">Bad request! Check for any error, and try again.</response>
         </member>
         <member name="M:ActorsGallery.Controllers.EpisodesController.Get(System.String)">
             <summary>
-            Fetch all episodes featuring a particular character, sorted in ascending order of <c>releaseDate</c>.
+            Fetch all episodes, optionally queried with a featured character's id or name. The episodes are sorted in ascending order of 'releaseDate'.
             </summary>
-            <param name="query">The search expression to filter results by. It must be in the format <c>char_id:{value}</c> or <c>char_name:{value}</c>.</param>
+            <param name="q">The search expression to filter results by. It must be in the format 'char_id:{value}' or 'char_name:{value}'.</param>
             <example>
-                <code>GET:  /api/episodes?query=char_id:5</code>
-                <code>GET:  /api/episodes?query=char_name:jackson</code>
+                <code>GET:  /api/episodes?q=char_id:5</code>
+                <code>GET:  /api/episodes?q=char_name:jackson</code>
             </example>
-            <returns>A JSON object whose <c>Payload</c> property contains a list of <c>Episode</c> objects matching the query, sorted in ascending order of <c>releaseDate</c>.</returns>
+            <returns>A JSON object whose 'Payload' property contains a list of 'Episode' objects matching the query, sorted in ascending order of 'releaseDate'.</returns>
             <response code="200">Success! Operation completed successfully</response> 
-            <response code="404">Not found! The specified character did not feature .</response>
             <response code="400">Bad request! Check for any error, and try again.</response>
         </member>
-        <member name="M:ActorsGallery.Controllers.EpisodesController.Forbidden(ActorsGallery.Data.Utilities.ResponseBody)">
+        <member name="M:ActorsGallery.Controllers.EpisodesController.PostEpisode(ActorsGallery.Core.DTOs.EpisodeRequestBody)">
             <summary>
-            A custom HTTP handler for generating 403Forbidden responses where the built-in handlers are inadequate
+            Create a new episode with the properties and values supplied in the request body.  
             </summary>
+            <param name="requestBody">A JSON object containing 'name', 'episodeCode' and 'releaseDate' properties.</param>
+            <returns>A JSON object whose 'Payload' property contains the newly created 'Episode' object, with missing properties included.</returns>
+            <response code="201">Success! Operation completed successfully</response> 
+            <response code="400">Bad request! Check for any error, and try again.</response>
+        </member>
+        <member name="M:ActorsGallery.Controllers.EpisodesController.PostCharacter(System.String,ActorsGallery.Core.DTOs.EpisodeRoleRequestBody)">
+            <summary>
+            Assign a character a role in an episode, using the character id and role name supplied in the request body.  
+            </summary>
+            <param name="id">The 'id' of the episode to assign the character a role in.</param>
+            <param name="requestBody">A JSON object containing 'characterId', 'roleName' properties.</param>
+            <returns>A JSON object whose 'Payload' property contains the newly created 'Episode' object, with missing properties included.</returns>
+            <response code="201">Success! Operation completed successfully</response> 
+            <response code="409">Conflict! Duplicate role assignments are not allowed.</response>
+            <response code="400">Bad request! Check for any error, and try again.</response>
+        </member>
+        <member name="M:ActorsGallery.Controllers.EpisodesController.PostComment(System.String,ActorsGallery.Core.DTOs.CommentRequestBody)">
+            <summary>
+            Post a comment targeting an episode, using the values supplied in the request body, along with the commenter's public IP address.  
+            </summary>
+            <param name="id">The 'id' of the episode to post the comment to.</param>
+            <param name="requestBody">A JSON object containing 'commentText', 'commenterName' properties.</param>
+            <returns>A JSON object whose 'Payload' property contains the newly created 'Episode' object, with missing properties included.</returns>
+            <response code="403">Forbidden! Unknown IP address.</response>
+            <response code="201">Success! Operation completed successfully</response> 
+            <response code="400">Bad request! Check for any error, and try again.</response>
+        </member>
+        <member name="M:ActorsGallery.Controllers.EpisodesController.UpdateEpisode(System.String,ActorsGallery.Core.DTOs.EpisodeRequestBody)">
+            <summary>
+            Update an existing episode with the properties and values supplied in the request body. THIS FEATURE IS NOT SUPPORTED AT THE MOMENT.
+            </summary>
+            <param name = "id" > The 'id' of the episode to be updated.</param>
+            <param name="requestBody">A JSON object containing the episode object to be updated.</param>
+            <response code = "400" > Bad request! Check for any error, and try again.</response>
+        </member>
+        <member name="M:ActorsGallery.Controllers.EpisodesController.DeleteEpisode(System.String)">
+            <summary>
+            Delete an episode with the specified 'id'. THIS FEATURE IS NOT SUPPORTED AT THE MOMENT.   
+            </summary>
+            <response code="400">Bad request! Check for any error, and try again.</response>
+        </member>
+        <member name="M:ActorsGallery.Controllers.LocationsController.Get">
+            <summary>
+            Fetch all locations.
+            </summary>
+            <returns>A JSON object whose 'Payload' property contains a list of 'Location' objects.</returns>
+            <response code="200">Success! Operation completed successfully</response> 
+            <response code="400">Bad request! Check for any error, and try again.</response>
+        </member>
+        <member name="M:ActorsGallery.Controllers.LocationsController.Post(ActorsGallery.Core.DTOs.LocationRequestBody)">
+            <summary>
+            Create a new location with the properties and values supplied in the request body.  
+            </summary>
+            <param name="requestBody">A JSON object containing 'name', 'latitude' and 'longitude' properties.</param>
+            <returns>A JSON object whose 'Payload' property contains the newly created 'Episode' object, with missing properties included.</returns>
+            <response code="201">Success! Operation completed successfully</response> 
+            <response code="400">Bad request! Check for any error, and try again.</response>
+        </member>
+        <member name="M:ActorsGallery.Controllers.LocationsController.UpdateLocation(System.String,ActorsGallery.Core.DTOs.LocationRequestBody)">
+            <summary>
+            Update an existing location with the properties and values supplied in the request body.THIS FEATURE IS NOT SUPPORTED AT THE MOMENT.
+            </summary>
+            <param name = "id" > The 'id' of the location to be updated.</param>
+            <param name="requestBody">A JSON object containing the location object to be updated.</param>
+            <response code = "400" > Bad request! Check for any error, and try again.</response>
+        </member>
+        <member name="M:ActorsGallery.Controllers.LocationsController.DeleteLocation(System.String)">
+            <summary>
+            Delete a location with the specified 'id'. THIS FEATURE IS NOT SUPPORTED AT THE MOMENT.   
+            </summary>
+            <response code="400">Bad request! Check for any error, and try again.</response>
         </member>
     </members>
 </doc>

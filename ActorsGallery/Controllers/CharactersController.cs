@@ -7,7 +7,7 @@ using System.Collections.Generic;
 
 namespace ActorsGallery.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/characters")]
     [ApiController]
     public class CharactersController : ControllerBase
     {
@@ -22,53 +22,59 @@ namespace ActorsGallery.Controllers
 
 
         // GET: api/characters
-#pragma warning disable CS1570 // XML comment has badly formed XML
         /// <summary>
         /// Fetch all characters, with optional sorting and/or filtering
         /// </summary>
-        /// <param name="filter_by">The property to filter results by. It must be assigned any of <c>gender</c>, <c>status</c>, <c>location</c> or <c>none</c>.</param>
-        /// <param name="filter_val">The corresponding value of the <c>filter_by</c> parameter, which will be used for fetching the results.</param>
-        /// <param name="sort_by">The property to sort results by. It must be assigned any of <c>firstname</c>, <c>lastname</c>, <c>gender</c> or <c>default</c>.</param>
-        /// <param name="sort_dir">The sort direction to be applied. It must be assigned any of <c>asc</c>, <c>desc</c>, <c>ascending</c>, <c>descending</c> or <c>default</c>.</param>
-        /// <example>
-        ///     <code>GET: api/characters?filter_by=gender&filter_val=female&sort_by=lastname&sort_dir=asc</code>
-        /// </example>
-        /// <returns>A JSON object whose <c>Payload</c> property contains a list of <c>Character</c> objects, with the specified sorting or filtering applied.</returns>
+        /// <param name="filter_by">The property to filter results by. It must be assigned any of 'gender', 'status', 'location' or 'none'.</param>
+        /// <param name="filter_val">The corresponding value of the 'filter_by' parameter, which will be used for fetching the results.</param>
+        /// <param name="sort_by">The property to sort results by. It must be assigned any of 'firstname', 'lastname', 'gender' or 'default'.</param>
+        /// <param name="sort_dir">The sort direction to be applied. It must be assigned any of 'asc', 'desc', 'ascending', 'descending' or 'default'.</param>
+        /// <returns>A JSON object whose 'Payload' property contains a list of 'Character' objects, with the specified sorting or filtering applied.</returns>
         /// <response code="200">Success! Operation completed successfully</response> 
         /// <response code="400">Bad request! Check for any error, and try again.</response>
-#pragma warning restore CS1570 // XML comment has badly formed XML
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ResponseBody))]
-        [HttpGet("api/characters")]
+        [HttpGet]
         public ActionResult Get([FromQuery(Name = "filter_by")] string filter_by = "none",
                                 [FromQuery(Name = "filter_val")] string filter_val = "none",
                                 [FromQuery(Name = "sort_by")] string sort_by = "default",
                                 [FromQuery(Name = "sort_dir")] string sort_dir = "default")
         {
-            List<CharacterDTO> characters = characterData.GetCharacters(filter_by, filter_val, sort_by, sort_dir);
+
+            List<CharacterDTO> characters;
+
+            if (Request.Query.Count == 0)
+            {
+                characters = characterData.GetCharacters("none", "none", "default", "default");
+            }
+            else
+            {
+                characters = characterData.GetCharacters(filter_by, filter_val, sort_by, sort_dir);
+            }
+
             if (characters != null)
             {
                 return Ok(formatter.Render("Characters retrieved successfully.", characters));
             }
             else
             {
-                return BadRequest(formatter.Render("No matching records found. This may be due to errors in your query."));
+                return BadRequest(formatter.Render("Unable to retrieve any records. Please check your URL for errors and try again."));
             }
         }
 
 
         // POST: api/characters
         /// <summary>
-        /// Create a new character with the properties and values supplied in <c>characterObj</c>.  
+        /// Create a new character with the properties and values supplied in the request body.  
         /// </summary>
-        /// <param name="characterObj">A JSON object containing <c>FirstName</c>, <c>LastName</c>, <c>Status</c>, <c>StateOfOrigin</c>, <c>Gender</c> and <c>LocationId</c> properties.</param>
-        /// <returns>A JSON object whose <c>Payload</c> property contains the newly created <c>Character</c> object, with missing properties included.</returns>
+        /// <param name="requestBody">A JSON object containing 'firstName', 'lastName', 'status', 'stateOfOrigin', 'gender' and 'locationId' properties.</param>
+        /// <returns>A JSON object whose 'Payload' property contains the newly created 'Character' object, with missing properties included.</returns>
         /// <response code="201">Success! Operation completed successfully</response> 
         /// <response code="400">Bad request! Check for any error, and try again.</response>
         [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(ResponseBody))]
-        [HttpPost("api/characters")]
-        public ActionResult Post([FromBody] CharacterDTO characterObj)
+        [HttpPost]
+        public ActionResult Post([FromBody] CharacterRequestBody requestBody)
         {
-            CharacterDTO newCharacter = characterData.CreateCharacter(characterObj, out string message);
+            CharacterDTO newCharacter = characterData.CreateCharacter(requestBody, out string message);
 
             if (newCharacter != null)
             {
@@ -81,42 +87,31 @@ namespace ActorsGallery.Controllers
         }
 
 
-        // PUT: api/characters/id
+        // PUT: api/characters/{id}
         /// <summary>
-        /// Update an existing character with the properties and values supplied in <c>characterObj</c>.  
+        /// Update an existing character with the properties and values supplied in the request body.THIS FEATURE IS NOT SUPPORTED AT THE MOMENT.
         /// </summary>
-        /// <param name="id">The <c>id</c> of the character to be updated.</param>
-        /// <param name="characterObj">A JSON object containing <c>FirstName</c>, <c>LastName</c>, <c>Status</c>, <c>StateOfOrigin</c>, <c>Gender</c> and <c>LocationId</c> properties.</param>
-        /// <returns>A JSON object whose <c>Payload</c> property contains the updated <c>Character</c> object, with missing properties included.</returns>
-        /// <response code="400">Bad request! Check for any error, and try again.</response>
-        ///// <response code="404">Not found! The specified resource does not exist.</response>
-        ///// <response code="200">Success! Operation completed successfully</response> 
-        //[ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ResponseBody))]
-        //[ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ResponseBody))]
+        /// <param name = "id" > The 'id' of the character to be updated.</param>
+        /// <param name="requestBody">A JSON object containing the character object to be updated.</param>
+        /// <response code = "400" > Bad request! Check for any error, and try again.</response>
         [HttpPut("{id}")]
-        public ActionResult Put([FromRoute] string id, [FromBody] CharacterDTO characterObj)
+        public ActionResult Put([FromRoute] string id, [FromBody] CharacterRequestBody requestBody)
         {
             return BadRequest(formatter
-                .Render("Sorry, this operation is currently not supported. \nIt will be supported in a future version of this API."));
+                .Render("Sorry, this operation is currently not supported. It will be supported in a future version of this API."));
         }
 
 
-        // DELETE: api/characters/id
+        // DELETE: api/characters/{id}
         /// <summary>
-        /// Delete a character with the specified <c>id</c>   
+        /// Delete a character with the specified 'id'. THIS FEATURE IS NOT SUPPORTED AT THE MOMENT.   
         /// </summary>
-        /// <param name="id">The <c>id</c> of the character to be deleted.</param>
-        /// <returns>A JSON object whose <c>Payload</c> property has no value.</returns>
         /// <response code="400">Bad request! Check for any error, and try again.</response>
-        ///// <response code="404">Not found! The specified resource does not exist.</response>
-        ///// <response code="200">Success! Operation completed successfully</response> 
-        //[ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ResponseBody))]
-        //[ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ResponseBody))]
         [HttpDelete("{id}")]
         public ActionResult Delete([FromRoute] string id)
         {
             return BadRequest(formatter
-                .Render("Sorry, this operation is currently not supported. \nIt will be supported in a future version of this API."));
+                .Render("Sorry, this operation is currently not supported. It will be supported in a future version of this API."));
         }
     }
 }

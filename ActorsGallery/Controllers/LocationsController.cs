@@ -7,12 +7,11 @@ using System.Collections.Generic;
 
 namespace ActorsGallery.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/locations")]
     [ApiController]
     public class LocationsController : ControllerBase
     {
         private readonly ILocationData locationData;
-        private readonly Validator validator = new Validator();
         private readonly Formatter formatter;
 
         public LocationsController(ILocationData locationService)
@@ -23,8 +22,14 @@ namespace ActorsGallery.Controllers
 
 
         // GET: api/locations
+        /// <summary>
+        /// Fetch all locations.
+        /// </summary>
+        /// <returns>A JSON object whose 'Payload' property contains a list of 'Location' objects.</returns>
+        /// <response code="200">Success! Operation completed successfully</response> 
+        /// <response code="400">Bad request! Check for any error, and try again.</response>
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ResponseBody))]
-        [HttpGet("api/locations")]
+        [HttpGet]
         public ActionResult Get()
         {
             List<LocationDTO> locations = locationData.GetAllLocations();
@@ -33,11 +38,18 @@ namespace ActorsGallery.Controllers
 
 
         // POST: api/locations
+        /// <summary>
+        /// Create a new location with the properties and values supplied in the request body.  
+        /// </summary>
+        /// <param name="requestBody">A JSON object containing 'name', 'latitude' and 'longitude' properties.</param>
+        /// <returns>A JSON object whose 'Payload' property contains the newly created 'Episode' object, with missing properties included.</returns>
+        /// <response code="201">Success! Operation completed successfully</response> 
+        /// <response code="400">Bad request! Check for any error, and try again.</response>
         [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(ResponseBody))]
-        [HttpPost("api/locations")]
-        public ActionResult Post([FromBody] LocationDTO locationObj)
+        [HttpPost]
+        public ActionResult Post([FromBody] LocationRequestBody requestBody)
         {
-            LocationDTO newLocation = locationData.CreateLocation(locationObj, out string message);
+            LocationDTO newLocation = locationData.CreateLocation(requestBody, out string message);
 
             if (newLocation != null)
             {
@@ -51,22 +63,31 @@ namespace ActorsGallery.Controllers
 
 
         // PUT: api/locations/{id}
+        /// <summary>
+        /// Update an existing location with the properties and values supplied in the request body.THIS FEATURE IS NOT SUPPORTED AT THE MOMENT.
+        /// </summary>
+        /// <param name = "id" > The 'id' of the location to be updated.</param>
+        /// <param name="requestBody">A JSON object containing the location object to be updated.</param>
+        /// <response code = "400" > Bad request! Check for any error, and try again.</response>
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ResponseBody))]
-        [HttpPut("api/locations/{id}")]
-        public ActionResult UpdateLocation([FromRoute] string id, [FromBody] LocationDTO locationObj)
+        [HttpPut("{id}")]
+        public ActionResult UpdateLocation([FromRoute] string id, [FromBody] LocationRequestBody requestBody)
         {
             return BadRequest(formatter
-                .Render("Sorry, this operation is currently not supported. \nIt will be supported in a future version of this API."));
+                .Render("Sorry, this operation is currently not supported. It will be supported in a future version of this API."));
         }
 
 
         // DELETE: api/locations/{id}
-        [HttpDelete("api/locations/{id}")]
+        /// <summary>
+        /// Delete a location with the specified 'id'. THIS FEATURE IS NOT SUPPORTED AT THE MOMENT.   
+        /// </summary>
+        /// <response code="400">Bad request! Check for any error, and try again.</response>
+        [HttpDelete("{id}")]
         public ActionResult DeleteLocation([FromRoute] string id)
         {
             return BadRequest(formatter
-                .Render("Sorry, this operation is currently not supported. \nIt will be supported in a future version of this API."));
+                .Render("Sorry, this operation is currently not supported. It will be supported in a future version of this API."));
         }
-
     }
 }

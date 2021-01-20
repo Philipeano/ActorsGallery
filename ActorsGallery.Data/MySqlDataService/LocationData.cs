@@ -43,7 +43,7 @@ namespace ActorsGallery.Data.MySqlDataService
         }
 
 
-        public LocationDTO CreateLocation(LocationDTO input, out string responseMsg)
+        public LocationDTO CreateLocation(LocationRequestBody input, out string responseMsg)
         {
             if (!validator.ValidateLocationObj(input, out responseMsg))
             {
@@ -75,7 +75,7 @@ namespace ActorsGallery.Data.MySqlDataService
         }
 
 
-        public LocationDTO UpdateLocation(string locationId, LocationDTO input, out string responseMsg)
+        public LocationDTO UpdateLocation(string locationId, LocationRequestBody input, out string responseMsg)
         {
             responseMsg = string.Empty;
 

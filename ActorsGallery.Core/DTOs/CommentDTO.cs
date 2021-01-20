@@ -32,4 +32,15 @@ namespace ActorsGallery.Core.DTOs
         [Display(Name = "Episode Title")]
         public string EpisodeName { get; set; }
     }
+
+
+    public class CommentRequestBody
+    {
+        [Required, Display(Name = "Commenter's Name")]
+        public string CommenterName { get; set; }
+
+
+        [Required, Display(Name = "Comment"), MaxLength(250)]
+        public string CommentText { get; set; }
+    }
 }
