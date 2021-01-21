@@ -41,7 +41,7 @@ namespace ActorsGallery
 
             services
                 .AddDbContextPool<ActorsGalleryContext>(options => options
-                .UseMySQL(Configuration.GetConnectionString("HerokuClearDbConnStr")));
+                .UseMySQL(Configuration.GetConnectionString("DefaultConnStr")));
 
             services.AddScoped<ICharacterData, CharacterData>();
             services.AddScoped<IEpisodeData, EpisodeData>();
@@ -59,7 +59,7 @@ namespace ActorsGallery
                         Version = "1",
                         Description = "This API enables users fetch information about motion picture episodes and characters, and post comments. " +
                         "Please note that this application is a work in progress. " +
-                        "Consequently, certain features, particularly 'authentication', 'update' and 'delete' operations, will be available in the next version of the API.",
+                        "Consequently, certain features, particularly 'update' and 'delete' operations, will be available in the next version of the API.",
                         Contact = new Microsoft.OpenApi.Models.OpenApiContact()
                         {
                             Email = "philipeano@gmail.com",
