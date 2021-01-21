@@ -6,8 +6,8 @@ A simple REST API that enables users to fetch information about motion picture e
 This is a back-end service which can be consumed by any web client that supports sending and receiving data in JSON format. 
 This application is a work in progress. Consequently, certain features, particularly 'authentication', 'update' and 'delete' operations, will be available in the next version. 
 
-- View the full API documentation [here](https://actorsgallery.azurewebsites.net/index.html)  
-- Access the hosted API [here](https://actorsgallery.azurewebsites.net/api).
+- View the API documentation [here](http://actorsgallery.herokuapp.com/index.html)  
+- Access the hosted API [here](http://actorsgallery.herokuapp.com/api).
 - Follow the project's progress via the [issue tracker](https://github.com/Philipeano/ActorsGallery/projects/1).
 
 
@@ -56,12 +56,13 @@ This application is a work in progress. Consequently, certain features, particul
 
 - Primary language: ```C#``` 
 - Server technology: ```ASP.Net Core```
-- Database system: ```MySQL```
+- Target runtime: ```.Net Core 3.1.1```
+- Database system: ```MySQL``` powered by ```ClearDB```
 - ORM: ```Entity Framework Core```
 - API documentation: ```Swashbuckle.AspNetCore```
-- Target Runtime: ```.Net Core 3.1.1```
+- Containerization: ```Docker``` 
 
 
 
 ## License
-[MIT © Philip Newman.](https://opensource.org/licenses/MIT)
+[MIT ï¿½ Philip Newman.](https://opensource.org/licenses/MIT)
