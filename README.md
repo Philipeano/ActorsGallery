@@ -4,11 +4,7 @@ A simple REST API that enables users to fetch information about motion picture e
 
 ## Overview
 This is a back-end service which can be consumed by any web client that supports sending and receiving data in JSON format. 
-This application is a work in progress. Consequently, certain features, particularly 'authentication', 'update' and 'delete' operations, will be available in the next version. 
-
-- View the full API documentation [here](https://actorsgallery.azurewebsites.net/index.html)  
-- Access the hosted API [here](https://actorsgallery.azurewebsites.net/api).
-- Follow the project's progress via the [issue tracker](https://github.com/Philipeano/ActorsGallery/projects/1).
+This application is a work in progress. Consequently, certain features, particularly 'authentication', 'update' and 'delete' operations, will be available in the next version. Follow the project's progress via the [issue tracker](https://github.com/Philipeano/ActorsGallery/projects/1).
 
 
 
@@ -64,4 +60,4 @@ This application is a work in progress. Consequently, certain features, particul
 
 
 ## License
-[MIT © Philip Newman.](https://opensource.org/licenses/MIT)
+[MIT Â© Philip Newman.](https://opensource.org/licenses/MIT)
