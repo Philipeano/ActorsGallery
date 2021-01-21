@@ -14,7 +14,7 @@ This application is a work in progress. Consequently, certain features, particul
 - Create motion picture episodes.
 - Fetch list of episodes, optionally filtered with a featured character.
 - Assign episode roles to characters. 
-- Post comments on episodes, with each commenter's public IP address automatically retrieved and saved.
+- Post comments on episodes, with each commenter's public IP address automatically saved along with their comment.
 - Create locations, defined with longitude and latitude values.
 - Fetch list of locations.
 
